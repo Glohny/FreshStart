@@ -139,10 +139,10 @@
   position: absolute;
   right: 60px;
   top: 100px;
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 150px;
   font-size: 80px;
   border: none;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 80px;
 }
