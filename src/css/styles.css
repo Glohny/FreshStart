@@ -66,12 +66,12 @@
 
   @font-face {
     font-family: Poppins;
-    src: url("Assets/Fonts/Poppins-Regular.ttf");
+    src: url("../Assets/Fonts/Poppins-Regular.ttf");
   }
 
   @font-face {
     font-family: ProGuer;
-    src: url("Assets/Fonts/ProtestGuerrilla-Regular.ttf");
+    src: url("../Assets/Fonts/ProtestGuerrilla-Regular.ttf");
   }
 
   .TopNavigation {
@@ -121,7 +121,28 @@
   }
 
   #MainFooter {
+    display: grid;
 
   }
 
+  .PostPannels {
+    background-color: white;
+    height: 300px;
+    width: 200px;
+    box-shadow: 0 5px 8px -1px rgba(0, 0, 0, 0.1);
+  }
 
+.AddButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 60px;
+  top: 100px;
+  height: 100px;
+  width: 100px;
+  font-size: 80px;
+  border: none;
+  background-color: white;
+  border-radius: 20px;
+}
