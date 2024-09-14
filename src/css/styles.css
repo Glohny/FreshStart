@@ -52,9 +52,10 @@
   }
 
   html {
-    overflow:auto;
+    overflow: scroll;
+    overflow-x: hidden;
     height: 100%;
-    width: calc(100vw (100vw- 100%));
+    width: 100%;
     font-family: Poppins;
   }
 
