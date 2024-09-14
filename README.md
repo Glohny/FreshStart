@@ -1,9 +1,8 @@
 # FreshStart
-FreshStart is a web-based tool designed to assist students, especially freshmen, in navigating school resources and communities more effectively. The platform offers an intuitive way to access essential school-related information, helping new students connect with clubs, events, and other important resources.
+FreshStart is a web-based tool designed to assist students, especially freshmen, in navigating school resources and communities more effectively. The platform offers an intuitive way to access essential school-related information, helping new students connect with seniors.
 
 Purpose
-The purpose of FreshStart is to simplify the onboarding process for new students by providing a centralized hub of information. This tool helps students become more involved in their school community by making it easy to discover opportunities, events, and resources tailored to their interests and needs.
-
+The purpose of FreshStart is to simplify the onboarding process for new students by providing a centralized information hub. This tool helps students become more involved in their school community by allowing them direct contant with approved seniors to ask whatever questions they might have.
 Features
 Simple Navigation: Easy-to-use interface for students to find essential resources.
 Resource Discovery: Helps students explore clubs, activities, and services available at their school.
