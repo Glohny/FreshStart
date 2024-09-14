@@ -52,12 +52,17 @@
   }
 
   html {
+    overflow:auto;
     height: 100%;
-    width: 100%;
+    width: calc(100vw (100vw- 100%));
     font-family: Poppins;
   }
 
-
+  body {
+    height: 100%;
+    width: 100%;
+    
+  }
 
   @font-face {
     font-family: Poppins;
@@ -75,12 +80,13 @@
     grid-template-columns: 1fr 2fr;
     color:rgb(121, 121, 121);
     font-weight: 500;
-    font-size: 30px;
+    box-shadow: 0 5px 8px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
 
   #HeadTitle {
     color:black;
-    padding-left: 50px;
+    padding-left: 300px;
     font-size: 45px;
     font-family: ProGuer;
   }
@@ -93,6 +99,11 @@
 
   #LinkTitle a {
     margin-left: 40px;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color:rgb(121, 121, 121);
   }
 
   .HoverDarken:hover {
@@ -103,3 +114,14 @@
   .HoverDarken:hover {
     color:black;
   }
+
+  #MainPage {
+    background-color:#f6efe7;
+    height: 100%;
+  }
+
+  #MainFooter {
+
+  }
+
+
