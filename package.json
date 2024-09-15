@@ -1,0 +1,15 @@
+{
+  "name": "FreshStart",
+  "version": "1.0.0",
+  "description": "FreshStart is a web-based tool designed to assist students, especially freshmen, in navigating school resources and communities more effectively. The platform offers an intuitive way to access essential school-related information, helping new students connect with seniors.",
+  "main": "javascript.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rohan and Andrew",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^10.13.1"
+  }
+}
