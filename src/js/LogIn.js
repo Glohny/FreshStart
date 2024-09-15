@@ -19,7 +19,7 @@ const provider = new GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
-const SignInButton = document.getElementById("SignInWithGoogle");
+const SignInButton = document.querySelector(".SIWGoogle");
 
 
 SignInButton.addEventListener("click", function(){
@@ -29,7 +29,7 @@ SignInButton.addEventListener("click", function(){
     const token = credential.accessToken;
     const user = result.user;
     console.log(user);
-    window.location.href = "dashboard.html";
+    window.location.href = "homepage.html";
 
 
   }).catch((error) => {
