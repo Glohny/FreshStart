@@ -317,6 +317,10 @@
   font-family: ProGuer;
 }
 
+#HeadTitle,#HeadTitle2 {
+  padding-left: 0px;
+}
+
 #LinkTitle {
   display: flex;
   align-items: center;
