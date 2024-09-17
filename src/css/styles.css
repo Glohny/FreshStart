@@ -78,9 +78,9 @@
     transition: background-color .218s, border-color .218s, box-shadow .218s;
     vertical-align: middle;
     white-space: nowrap;
-    width: 380px;
-    max-width: 380px;
-    min-width: 380px;
+    width: 70%;
+    max-width: 70%;
+    min-width: 70%;
   }
   
   .gsi-material-button .gsi-material-button-icon {
