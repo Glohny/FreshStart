@@ -16,13 +16,15 @@ const auth = getAuth(app);
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("this was reached");
-      const uid = user.uid;
+      /* const uid = user.uid; */
       const uemail = user.email;
       const uname = user.displayName;
-      const TestBox = document.createElement("div");
-      TestBox.innerHTML = uid + " " + uemail + " " + uname;
-      document.querySelector(".MainPage").appendChild(TestBox);
+      const EmailSpan = document.createElement("span");
+      const NameSpan = document.createElement("span");
+      EmailSpan.innerHTML = uemail;
+      NameSpan.innerHTML = uname;
+      document.querySelector(".ProfileBox").appendChild(EmailSpan);
+      document.querySelector(".ProfileBox").appendChild(NameSpan);
     } else {
       window.location.href = "index.html";
       alert("Please sign in before attempting to access the pages!")
