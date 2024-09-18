@@ -366,18 +366,24 @@ a:visited {
 }
 
 .AddButton {
-display: flex;
-justify-content: center;
-align-items: center;
-position: absolute;
-right: 60px;
-top: 100px;
-height: 80px;
-width: 150px;
-font-size: 80px;
-border: none;
-background-color: white;
-border-radius: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 110px;
+  top: 100px;
+  height: 80px;
+  width: 150px;
+  font-size: 25px;
+  border: none;
+  background-color: rgb(63, 220, 48);
+  color: var(--main-wt-txt-clr);
+  border-radius: 80px;
+  font-family: Noto;
+}
+
+.AddButton:active {
+  background-color: rgb(48, 173, 37);
 }
 
 .ProfileBox {
