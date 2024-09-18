@@ -227,6 +227,7 @@
 }
 
 #HeadTitle2 {
+  display: flex;
   padding-left: 0px;
   top: 5px;
   position: absolute;
@@ -308,6 +309,7 @@
   font-weight: 500;
   box-shadow: 0 5px 8px -1px rgba(0, 0, 0, 0.1);
   position: relative;
+  background-color: var(--main-bg);
 }
 
 #HeadTitle,#HeadTitle2 {
@@ -317,14 +319,14 @@
   font-family: ProGuer;
 }
 
-#HeadTitle,#HeadTitle2 {
+#HeadTitle2 {
   padding-left: 0px;
 }
 
 #LinkTitle {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 #LinkTitle a {
@@ -374,19 +376,31 @@ height: 80px;
 width: 150px;
 font-size: 80px;
 border: none;
-background-color: var(--main-bg);
+background-color: white;
 border-radius: 80px;
 }
 
 .ProfileBox {
-  background-color: var(--main-sr);
-  position: sticky;
-  left: 20px;
-  top: 100px;
-  height: 300px;
-  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: var(--main-bg);
+  color: black;
+  font-size: 25px;
+  height: 75%;
+  width: 15%;
   border-radius: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin-left: 40px;
+  margin-right: 120px;
+  font-family: Inria;
 }
+
+.UPhotoIMG {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
+

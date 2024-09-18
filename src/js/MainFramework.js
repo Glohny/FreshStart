@@ -17,13 +17,15 @@ const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
     if (user) {
       /* const uid = user.uid; */
-      const uemail = user.email;
       const uname = user.displayName;
-      const EmailSpan = document.createElement("span");
+      const uphoto = user.photoURL;
       const NameSpan = document.createElement("span");
-      EmailSpan.innerHTML = uemail;
+      const UPhotoIMG = document.createElement("img");
+      UPhotoIMG.src = uphoto;
+      UPhotoIMG.className = "UPhotoIMG";
+      UPhotoIMG.alt = ":(";
       NameSpan.innerHTML = uname;
-      document.querySelector(".ProfileBox").appendChild(EmailSpan);
+      document.querySelector(".ProfileBox").appendChild(UPhotoIMG);
       document.querySelector(".ProfileBox").appendChild(NameSpan);
     } else {
       window.location.href = "index.html";
