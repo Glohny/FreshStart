@@ -397,14 +397,15 @@ a:visited {
   background-color: var(--main-bg);
   color: black;
   font-size: 25px;
-  height: 75%;
-  width: 15%;
+  height: 85%;
+  width: 20%;
   border-radius: 20px;
   display: flex;
   align-items: center;
   margin-left: 40px;
-  margin-right: 120px;
+  margin-right: 80px;
   font-family: Inria;
+  box-shadow: 0 0px 8px -1px rgba(0, 0, 0, .15);
 }
 
 .UPhotoIMG {
@@ -414,11 +415,15 @@ a:visited {
 }
 
 .SeniorBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 25px;
   height: 45px;
   width: 80px;
   color: rgb(79, 79, 255);
   outline: solid rgb(93, 93, 237);
+  background-color: whitesmoke;
 }
 
 
