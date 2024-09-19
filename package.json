@@ -10,6 +10,6 @@
   "author": "Rohan and Andrew",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^10.13.1"
+    "firebase": "^10.13.2"
   }
 }
