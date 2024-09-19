@@ -60,10 +60,13 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   async function fetchSeniorStatus(userId) {
+    console.log(userId);
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
+
+    const { IsSenior } = userSnap.data();
   
-    if (userSnap.exists()) {
+    if (IsSenior == true) {
       const { IsSenior } = userSnap.data();
       return `${IsSenior}`;
     } else {
