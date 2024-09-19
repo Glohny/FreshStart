@@ -27,7 +27,7 @@ onAuthStateChanged(auth, async (user) => {
       const UPhotoIMG = document.createElement("img");
       UPhotoIMG.src = uphoto;
       UPhotoIMG.className = "UPhotoIMG";
-      UPhotoIMG.alt = ":(";
+      UPhotoIMG.referrerPolicy = "no-referrer";
       NameSpan.innerHTML = uname;
       document.querySelector(".ProfileBox").appendChild(UPhotoIMG);
       document.querySelector(".ProfileBox").appendChild(NameSpan);
@@ -60,7 +60,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   async function fetchSeniorStatus(userId) {
-    console.log(userId);
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
 
