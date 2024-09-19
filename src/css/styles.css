@@ -382,8 +382,12 @@ a:visited {
   font-family: Noto;
 }
 
+.AddButton:hover {
+  background-color: rgb(59, 203, 46);
+}
+
 .AddButton:active {
-  background-color: rgb(48, 173, 37);
+  background-color: rgb(41, 146, 31);
 }
 
 .ProfileBox {
@@ -407,6 +411,14 @@ a:visited {
   border-radius: 50%;
   height: 45px;
   width: 45px;
+}
+
+.SeniorBadge {
+  border-radius: 25px;
+  height: 45px;
+  width: 80px;
+  color: rgb(79, 79, 255);
+  outline: solid rgb(93, 93, 237);
 }
 
 
