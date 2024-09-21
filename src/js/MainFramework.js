@@ -27,15 +27,18 @@ onAuthStateChanged(auth, async (user) => {
       const UPhotoIMG = document.createElement("img");
       UPhotoIMG.src = uphoto;
       UPhotoIMG.className = "UPhotoIMG";
-      UPhotoIMG.referrerPolicy = "no-referrer";
+      UPhotoIMG.alt = ":(";
       NameSpan.innerHTML = uname;
       document.querySelector(".ProfileBox").appendChild(UPhotoIMG);
       document.querySelector(".ProfileBox").appendChild(NameSpan);
-      const temp = await fetchSeniorStatus(uid);
-      if (temp == null) {
-        console.log("Not Senior!");
+      const temp = await fetchRank(uid);
+      if (temp == "Admin") {
+        const AdminBadge = document.createElement("div");
+        AdminBadge.className = "AdminBadge";
+        AdminBadge.innerHTML = "Admin";
+        document.querySelector(".ProfileBox").appendChild(AdminBadge);
       }
-      else {
+      else if (temp == "Senior") {
         const SeniorBadge = document.createElement("div");
         SeniorBadge.className = "SeniorBadge";
         SeniorBadge.innerHTML = "Senior";
@@ -53,23 +56,25 @@ onAuthStateChanged(auth, async (user) => {
     if (!userDocSnap.exists()) {
         await setDoc(userDocRef, {
             UserName: uname,
-            IsSenior: false
+            IsSenior: false,
+            IsAdmin: false,
 
         });
     }
   }
 
-  async function fetchSeniorStatus(userId) {
-    const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
 
-    const { IsSenior } = userSnap.data();
+  async function fetchRank(userId) {
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
+
+      const { IsAdmin, IsSenior } = userSnap.data();
   
-    if (IsSenior == true) {
-      const { IsSenior } = userSnap.data();
-      return `${IsSenior}`;
-    } else {
-      console.log("No such document!");
-      return null;
-    }
-  }
+      if (IsAdmin == true) {
+        return "Admin";
+      }
+      else if (IsSenior == true) {
+        return "Senior";
+      }
+      return
+}

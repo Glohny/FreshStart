@@ -409,8 +409,8 @@ a:visited {
 
 .UPhotoIMG {
   border-radius: 50%;
-  height: 3.75vw;
-  width: 3.75vw;
+  height: 2.75vw;
+  width: 2.75vw;
 }
 
 .SeniorBadge {
@@ -419,10 +419,23 @@ a:visited {
   align-items: center;
   justify-content: center;
   border-radius: 25px;
-  height: 3vh;
+  height: 2vw;
   width: 7vw;
   color: rgb(79, 79, 255);
   outline: solid rgb(93, 93, 237);
+  background-color: whitesmoke;
+}
+
+.AdminBadge {
+  font-size: 1.25vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  height: 2vw;
+  width: 7vw;
+  color: rgb(255, 79, 82);
+  outline: solid rgb(237, 93, 93);
   background-color: whitesmoke;
 }
 
