@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDiv4yV6r-hDz9euz7VeQKO-RHM81__Wdk",
@@ -18,11 +18,10 @@ const db = getFirestore(app);
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-      /* const uid = user.uid; */
       const uname = user.displayName;
       const uid = user.uid;
-      addUserIfNotExists(uid, uname);
       const uphoto = user.photoURL;
+      addUserIfNotExists(uid, uname, uphoto);
       const NameSpan = document.createElement("span");
       const UPhotoIMG = document.createElement("img");
       UPhotoIMG.src = uphoto;
@@ -48,6 +47,39 @@ onAuthStateChanged(auth, async (user) => {
         const rolesBtn = document.querySelector('.Roles');
         const rolesDropdown = document.querySelector('.RoleList');
 
+        const q = query(collection(db, "users"), where("IsAdmin", "!=", true));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const { UserName, PhotoURL, IsSenior} = doc.data();
+          const AccountDiv = document.createElement("div");
+          const PfpImage = document.createElement("img");
+          const Option = document.createElement("select");
+          Option.className = "OptionRanks";
+          const Opt1 = document.createElement("option");
+          Opt1.className = "OptionRanks"
+          Opt1.innerHTML = "Senior";
+          Opt1.value = "Senior"; 
+          const Opt2 = document.createElement("option");
+          Opt2.className = "OptionRanks"
+          Opt2.innerHTML = "Freshmen";
+          Opt2.value = "Freshmen";
+          Option.appendChild(Opt1);
+          Option.appendChild(Opt2);
+          if (IsSenior == true) {
+              Option.value = "Senior"; 
+          } else {
+              Option.value = "Freshmen"; 
+          }
+          AccountDiv.className = "AccountDiv";
+          PfpImage.className = "UPhotoIMG";
+          PfpImage.src = PhotoURL;
+          AccountDiv.innerHTML = UserName;
+          AccountDiv.appendChild(PfpImage);
+          AccountDiv.appendChild(Option);
+          rolesDropdown.appendChild(AccountDiv);
+        });
+
         rolesBtn.addEventListener('mouseenter', () => {
           rolesDropdown.style.visibility = 'visible';
         });
@@ -61,7 +93,7 @@ onAuthStateChanged(auth, async (user) => {
             if (!rolesDropdown.matches(':hover')) {
               rolesDropdown.style.visibility = 'hidden';
             }
-          }, 1000);
+          }, 100);
         });
 
         rolesDropdown.addEventListener('mouseleave', () => {
@@ -79,7 +111,7 @@ onAuthStateChanged(auth, async (user) => {
     }
   });
 
-  async function addUserIfNotExists(userId, uname) {
+  async function addUserIfNotExists(userId, uname, uphoto) {
     const userDocRef = doc(db, "users", userId);
     const userDocSnap = await getDoc(userDocRef);
     if (!userDocSnap.exists()) {
@@ -87,7 +119,7 @@ onAuthStateChanged(auth, async (user) => {
             UserName: uname,
             IsSenior: false,
             IsAdmin: false,
-
+            PhotoURL: uphoto
         });
     }
   }

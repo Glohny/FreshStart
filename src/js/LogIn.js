@@ -25,7 +25,7 @@ SignInButton.addEventListener("click", function(){
   .then(() => {
     window.location.href = "homepage.html";
   }).catch((error) => {
-    alert("Error logging in");
+    alert("Error logging in" + error);
   });
 });
 

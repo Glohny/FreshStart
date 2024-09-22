@@ -394,7 +394,7 @@ a:visited {
   justify-content: space-evenly;
   background-color: var(--main-bg);
   color: black;
-  font-size: 2vw;
+  font-size: 1.65vw;
   height: 85%;
   width: 30%;
   border-radius: 20px;
@@ -403,13 +403,13 @@ a:visited {
   margin-left: 40px;
   margin-right: 40px;
   font-family: Inria;
-  box-shadow: 0 0px 8px -1px rgba(0, 0, 0, .15);
+  box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
 }
 
 .UPhotoIMG {
   border-radius: 50%;
-  height: 2.75vw;
-  width: 2.75vw;
+  height: 2.55vw;
+  width: 2.55vw;
 }
 
 .SeniorBadge {
@@ -419,7 +419,7 @@ a:visited {
   justify-content: center;
   border-radius: 25px;
   height: 2vw;
-  width: 7vw;
+  width: 5vw;
   color: rgb(79, 79, 255);
   outline: solid rgb(93, 93, 237);
   background-color: whitesmoke;
@@ -448,9 +448,12 @@ a:visited {
 }
 
 .RoleList {
+  padding-top: 20px;
   display: flex;
-  justify-content: center;
-  visibility: visible;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  visibility: hidden;
   top: 80px;
   right: 17.5%;
   position: absolute;
@@ -461,3 +464,24 @@ a:visited {
   border-radius: 50px;
 }
 
+.AccountDiv {
+  color: var(--main-txt-clr);
+  display: grid;
+  grid-template-columns: 28% 28% 44%;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: var(--main-bg);
+  width: 85%;
+  margin-bottom: 5px;
+  border-radius: 15px;
+  transition: none;
+  font-size: 20px;
+  font-family: Noto;
+  padding: 5px 0px 5px 0px;
+}
+
+.OptionRanks {
+  width: 100px;
+}
