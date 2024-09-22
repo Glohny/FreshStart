@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDiv4yV6r-hDz9euz7VeQKO-RHM81__Wdk",
@@ -51,10 +51,12 @@ onAuthStateChanged(auth, async (user) => {
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          const { UserName, PhotoURL, IsSenior} = doc.data();
+          const { UserName, PhotoURL, IsSenior } = doc.data();
+          const DocId = doc.id;
           const AccountDiv = document.createElement("div");
           const PfpImage = document.createElement("img");
           const Option = document.createElement("select");
+          Option.setAttribute("data-user-id", DocId);
           Option.className = "OptionRanks";
           const Opt1 = document.createElement("option");
           Opt1.className = "OptionRanks"
@@ -78,6 +80,10 @@ onAuthStateChanged(auth, async (user) => {
           AccountDiv.appendChild(PfpImage);
           AccountDiv.appendChild(Option);
           rolesDropdown.appendChild(AccountDiv);
+          Option.addEventListener('change', function() {
+            const selectedValue = this.value;
+            updateRoleForUser(selectedValue, this.getAttribute('data-user-id'));
+          });
         });
 
         rolesBtn.addEventListener('mouseenter', () => {
@@ -111,7 +117,7 @@ onAuthStateChanged(auth, async (user) => {
     }
   });
 
-  async function addUserIfNotExists(userId, uname, uphoto) {
+    async function addUserIfNotExists(userId, uname, uphoto) {
     const userDocRef = doc(db, "users", userId);
     const userDocSnap = await getDoc(userDocRef);
     if (!userDocSnap.exists()) {
@@ -122,7 +128,7 @@ onAuthStateChanged(auth, async (user) => {
             PhotoURL: uphoto
         });
     }
-  }
+    }
 
   async function fetchRank(userId) {
       const userRef = doc(db, "users", userId);
@@ -137,6 +143,21 @@ onAuthStateChanged(auth, async (user) => {
         return "Senior";
       }
       return
+}
+
+async function updateRoleForUser(UpdatedRoles, userId) {
+  const currentRef = doc(db, "users", userId);
+  if (UpdatedRoles == "Senior")
+  {
+    await updateDoc(currentRef, {
+      IsSenior: true,
+    })
+  }
+  else {
+    await updateDoc(currentRef, {
+      IsSenior: false,
+    })
+  }
 }
 
 
