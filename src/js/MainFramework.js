@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDiv4yV6r-hDz9euz7VeQKO-RHM81__Wdk",
@@ -33,10 +33,40 @@ onAuthStateChanged(auth, async (user) => {
       document.querySelector(".ProfileBox").appendChild(NameSpan);
       const temp = await fetchRank(uid);
       if (temp == "Admin") {
+        const LinkTitle = document.querySelector("#LinkTitle");
         const AdminBadge = document.createElement("div");
+        const Roles = document.createElement("div");
+        const RoleList = document.createElement("div");
+        RoleList.className = "RoleList";
         AdminBadge.className = "AdminBadge";
         AdminBadge.innerHTML = "Admin";
+        Roles.className = "Roles";
+        Roles.innerHTML = "Roles";
         document.querySelector(".ProfileBox").appendChild(AdminBadge);
+        LinkTitle.insertBefore(Roles, document.querySelector(".ProfileBox"));
+        document.querySelector(".Roles").appendChild(RoleList);
+        const rolesBtn = document.querySelector('.Roles');
+        const rolesDropdown = document.querySelector('.RoleList');
+
+        rolesBtn.addEventListener('mouseenter', () => {
+          rolesDropdown.style.visibility = 'visible';
+        });
+
+        rolesDropdown.addEventListener('mouseenter', () => {
+          rolesDropdown.style.visibility = 'visible';
+        });
+
+        rolesBtn.addEventListener('mouseleave', () => {
+          setTimeout(() => {
+            if (!rolesDropdown.matches(':hover')) {
+              rolesDropdown.style.visibility = 'hidden';
+            }
+          }, 1000);
+        });
+
+        rolesDropdown.addEventListener('mouseleave', () => {
+          rolesDropdown.style.visibility = 'hidden';
+        });
       }
       else if (temp == "Senior") {
         const SeniorBadge = document.createElement("div");
@@ -46,7 +76,6 @@ onAuthStateChanged(auth, async (user) => {
       }
     } else {
       window.location.href = "index.html";
-      alert("Please sign in before attempting to access the pages!")
     }
   });
 
@@ -63,7 +92,6 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-
   async function fetchRank(userId) {
       const userRef = doc(db, "users", userId);
       const userSnap = await getDoc(userRef);
@@ -78,3 +106,6 @@ onAuthStateChanged(auth, async (user) => {
       }
       return
 }
+
+
+

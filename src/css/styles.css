@@ -337,15 +337,14 @@ a:visited {
   color:rgb(121, 121, 121);
 }
 
-.HoverDarken:hover {
-  color:var(--main-txt-clr);
+.HoverDarken {
   transition: .25s;
 }
 
 .HoverDarken:hover {
   color:var(--main-txt-clr);
+  transition: .25s;
 }
-
 
 .MainPage {
   background-color: var(--main-bg);
@@ -439,4 +438,26 @@ a:visited {
   background-color: whitesmoke;
 }
 
+.Roles {
+  margin-left: 40px;
+  transition: .25s;
+}
+
+.Roles:hover {
+  color:var(--main-txt-clr);
+}
+
+.RoleList {
+  display: flex;
+  justify-content: center;
+  visibility: visible;
+  top: 80px;
+  right: 17.5%;
+  position: absolute;
+  overflow-y: auto;
+  height: max(500px);
+  width: 300px;
+  background-color: white;
+  border-radius: 50px;
+}
 
