@@ -18,29 +18,31 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Handle user authentication state changes
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const { displayName: uname, uid, photoURL: uphoto } = user;
     await addUserIfNotExists(uid, uname, uphoto);
-    addUserProfile(uphoto, uname);
 
     const rank = await fetchRank(uid);
 
     if (rank === "Admin") {
+      document.querySelector(".loader").style.visibility = "hidden";
+      addUserProfile(uphoto, uname);
       setupAdminPanel();
     } else if (rank === "Senior") {
+      document.querySelector(".loader").style.visibility = "hidden";
+      addUserProfile(uphoto, uname);
       displaySeniorBadge();
     }
+    else if (rank === null) {
+      document.querySelector(".loader").style.visibility = "hidden";
+      addUserProfile(uphoto, uname);
+    }
   } else {
-    // Redirect to login page if not authenticated
     window.location.href = "index.html";
   }
 });
 
-/**
- * Adds user to Firestore if they don't exist.
- */
 async function addUserIfNotExists(userId, uname, uphoto) {
   const userDocRef = doc(db, "users", userId);
   const userDocSnap = await getDoc(userDocRef);
@@ -55,9 +57,6 @@ async function addUserIfNotExists(userId, uname, uphoto) {
   }
 }
 
-/**
- * Fetches the user's rank (Admin or Senior).
- */
 async function fetchRank(userId) {
   const userRef = doc(db, "users", userId);
   const userSnap = await getDoc(userRef);
@@ -70,9 +69,6 @@ async function fetchRank(userId) {
   return null;
 }
 
-/**
- * Adds the user's profile picture and name to the UI.
- */
 function addUserProfile(uphoto, uname) {
   const NameSpan = document.createElement("span");
   const UPhotoIMG = document.createElement("img");
@@ -87,16 +83,13 @@ function addUserProfile(uphoto, uname) {
   profileBox.appendChild(NameSpan);
 }
 
-/**
- * Displays the admin panel and dropdown for managing roles.
- */
 async function setupAdminPanel() {
   const LinkTitle = document.querySelector("#LinkTitle");
   const AdminBadge = createAdminBadge();
   const RolesSection = createRolesSection();
 
   document.querySelector(".ProfileBox").appendChild(AdminBadge);
-  LinkTitle.insertBefore(RolesSection, document.querySelector(".ProfileBox"));
+  LinkTitle.insertBefore(RolesSection, document.querySelectorAll(".HoverDarken")[0]);
 
   const usersQuery = query(collection(db, "users"), where("IsAdmin", "!=", true));
   const querySnapshot = await getDocs(usersQuery);
@@ -112,9 +105,6 @@ async function setupAdminPanel() {
   setupRoleDropdownToggle();
 }
 
-/**
- * Creates and returns the Admin badge element.
- */
 function createAdminBadge() {
   const AdminBadge = document.createElement("div");
   AdminBadge.className = "AdminBadge";
@@ -122,9 +112,6 @@ function createAdminBadge() {
   return AdminBadge;
 }
 
-/**
- * Creates and returns the Roles section element.
- */
 function createRolesSection() {
   const Roles = document.createElement("div");
   Roles.className = "Roles";
@@ -137,9 +124,6 @@ function createRolesSection() {
   return Roles;
 }
 
-/**
- * Creates and returns the user account div for displaying in the role dropdown.
- */
 function createUserAccountDiv(UserName, PhotoURL, IsSenior, DocId) {
   const AccountDiv = document.createElement("div");
   const PfpImage = document.createElement("img");
@@ -178,9 +162,6 @@ function createUserAccountDiv(UserName, PhotoURL, IsSenior, DocId) {
   return AccountDiv;
 }
 
-/**
- * Toggles the visibility of the role dropdown when hovered.
- */
 function setupRoleDropdownToggle() {
   const rolesBtn = document.querySelector('.Roles');
   const rolesDropdown = document.querySelector('.RoleList');
@@ -206,9 +187,6 @@ function setupRoleDropdownToggle() {
   });
 }
 
-/**
- * Updates the role for the user in Firestore when the role is changed.
- */
 async function updateRoleForUser(updatedRole, userId) {
   const userRef = doc(db, "users", userId);
   await updateDoc(userRef, {
@@ -216,12 +194,10 @@ async function updateRoleForUser(updatedRole, userId) {
   });
 }
 
-/**
- * Displays the Senior badge on the user's profile.
- */
 function displaySeniorBadge() {
   const SeniorBadge = document.createElement("div");
   SeniorBadge.className = "SeniorBadge";
   SeniorBadge.innerHTML = "Senior";
   document.querySelector(".ProfileBox").appendChild(SeniorBadge);
 }
+
