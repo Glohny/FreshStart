@@ -1,5 +1,5 @@
 document.querySelector(".AddButton").addEventListener("click", function() {
-  document.querySelector("#dialog").show();
+  document.querySelector("#MainDialog").show();
 })
 
 // Import Firebase modules

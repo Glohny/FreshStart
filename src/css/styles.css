@@ -505,8 +505,13 @@ a:visited {
 }
 @keyframes l1 {to{transform: rotate(.5turn)}}
 
-#PostForm {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#MainDialog {
+  position: absolute;
+  margin: auto;
+  top: 10%;
+}
+
+#MainDialog::backdrop {
+  background-color: black;
+  opacity: .25;
 }
