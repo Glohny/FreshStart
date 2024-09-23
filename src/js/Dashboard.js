@@ -32,6 +32,10 @@ onAuthStateChanged(auth, async (user) => {
         addUserProfile(uphoto, uname);
         displaySeniorBadge();
       }
+      else if (rank === null) {
+        document.querySelector(".loader").style.visibility = "hidden";
+        addUserProfile(uphoto, uname);
+      }
     } else {
       window.location.href = "index.html";
     }
@@ -135,3 +139,41 @@ function createRolesSection() {
   
     return Roles;
 }
+
+function createUserAccountDiv(UserName, PhotoURL, IsSenior, DocId) {
+    const AccountDiv = document.createElement("div");
+    const PfpImage = document.createElement("img");
+    const Option = document.createElement("select");
+  
+    Option.setAttribute("data-user-id", DocId);
+    Option.className = "OptionRanks";
+  
+    const Opt1 = document.createElement("option");
+    Opt1.className = "OptionRanks";
+    Opt1.innerHTML = "Senior";
+    Opt1.value = "Senior";
+  
+    const Opt2 = document.createElement("option");
+    Opt2.className = "OptionRanks";
+    Opt2.innerHTML = "Freshmen";
+    Opt2.value = "Freshmen";
+  
+    Option.appendChild(Opt1);
+    Option.appendChild(Opt2);
+  
+    Option.value = IsSenior ? "Senior" : "Freshmen";
+  
+    Option.addEventListener('change', function () {
+      const selectedValue = this.value;
+      updateRoleForUser(selectedValue, this.getAttribute('data-user-id'));
+    });
+  
+    PfpImage.src = PhotoURL;
+    PfpImage.className = "UPhotoIMG";
+    AccountDiv.className = "AccountDiv";
+    AccountDiv.innerHTML = UserName;
+    AccountDiv.appendChild(PfpImage);
+    AccountDiv.appendChild(Option);
+  
+    return AccountDiv;
+  }

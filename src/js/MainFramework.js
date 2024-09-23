@@ -1,3 +1,7 @@
+document.querySelector(".AddButton").addEventListener("click", function() {
+  document.querySelector("#dialog").show();
+})
+
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
@@ -147,7 +151,7 @@ function createUserAccountDiv(UserName, PhotoURL, IsSenior, DocId) {
 
   Option.value = IsSenior ? "Senior" : "Freshmen";
 
-  Option.addEventListener('change', function () {
+  Option.addEventListener("change", function () {
     const selectedValue = this.value;
     updateRoleForUser(selectedValue, this.getAttribute('data-user-id'));
   });
