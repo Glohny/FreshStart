@@ -504,3 +504,9 @@ a:visited {
   visibility: visible;
 }
 @keyframes l1 {to{transform: rotate(.5turn)}}
+
+#PostForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

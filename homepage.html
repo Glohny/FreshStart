@@ -23,7 +23,20 @@
         <button type = "button" class = "AddButton">
             <span class = "AddButton_Plus">New Post</span>
             <dialog id = "dialog">
-                hello?
+                <form id = "PostForm">
+                    <div class = "InputBar"> 
+                        <label for="titleF">TITLE</label>
+                        <input type="text" id="titleF" class="BookInputs" required>
+                    </div>
+                    <div class = "InputBar">
+                        <label for="author">AUTHOR</label>
+                        <input type="text" id="author" class="BookInputs" required>
+                    </div>
+                    <div class = "InputBar">
+                        <label for="pages">PAGES</label>
+                        <input type="number" id="pages" class="BookInputs" required>
+                    </div>
+                </form>
             </dialog>
         </button>
     </main>
