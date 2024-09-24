@@ -515,3 +515,11 @@ a:visited {
   background-color: black;
   opacity: .25;
 }
+
+#dashHeader {
+  top: 35px;
+  left: 35px;
+  position: relative;
+  font-size: 25px;
+  font-weight: bold;
+}
