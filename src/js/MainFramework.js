@@ -1,11 +1,14 @@
 document.querySelector(".AddButton").addEventListener("click", function() {
-  document.querySelector("#MainDialog").show();
+  document.querySelector("#MainDialog").showModal();
 })
+
+document.getElementById("PostForm").addEventListener("submit", onSubmitForm);
+
 
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 // Firebase configuration and initialization
 const firebaseConfig = {
@@ -45,6 +48,9 @@ onAuthStateChanged(auth, async (user) => {
   } else {
     window.location.href = "index.html";
   }
+
+  AddPosts()
+
 });
 
 async function addUserIfNotExists(userId, uname, uphoto) {
@@ -205,3 +211,45 @@ function displaySeniorBadge() {
   document.querySelector(".ProfileBox").appendChild(SeniorBadge);
 }
 
+async function onSubmitForm(e) {
+  e.preventDefault();
+  document.querySelector("#MainDialog").close(); 
+
+  const AuthorID = auth.currentUser.uid; 
+  const Content = document.getElementById("Content").value;
+  const Timestamp = serverTimestamp();
+  const Title = document.getElementById("Title").value;
+
+  await addDoc(collection(db, "posts"), {
+    AuthorID: AuthorID,
+    Content: Content,
+    Timestamp: Timestamp,
+    Title: Title,
+    Rank: await fetchRank(AuthorID)
+  });
+
+  document.getElementById("PostForm").reset();
+  location.reload();
+}
+
+async function AddPosts() {
+  const postsQuery = collection(db, "posts");
+  const querySnapshot = await getDocs(postsQuery);
+
+  const HomePage = document.querySelector('.MainPage');
+  querySnapshot.forEach((doc) => {
+    const { AuthorID, Content, Title } = doc.data();
+    const DocId = doc.id;
+    const PostDivs = CreatePostDiv(Content, Title, AuthorID, DocId);
+    console.log(Content);
+    console.log(Title);
+    HomePage.appendChild(PostDivs);
+  });
+}
+
+function CreatePostDiv(Content, Title, AuthorID, Author, PostID) {
+  const currentDiv = document.createElement("div");
+  currentDiv.className = "PostDivs";
+  currentDiv.innerHTML = Title + " | " + Content;
+  return currentDiv;
+}
