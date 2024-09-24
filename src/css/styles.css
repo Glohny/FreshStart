@@ -555,3 +555,19 @@ input#Content {
   border-radius: 20px;
   margin-top: 30px;
 }
+
+#dashHeader {
+  top: 35px;
+  left: 35px;
+  position: relative;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#dashHeader {
+  top: 35px;
+  left: 35px;
+  position: relative;
+  font-size: 25px;
+  font-weight: bold;
+}
