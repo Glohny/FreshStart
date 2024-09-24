@@ -554,7 +554,20 @@ input#Content {
   box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
   border-radius: 20px;
   margin-top: 30px;
+  animation: 1.5s PostDivs;
 }
+
+@keyframes PostDivs {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
 
 #dashHeader {
   top: 35px;
