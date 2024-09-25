@@ -8,7 +8,7 @@ document.getElementById("PostForm").addEventListener("submit", onSubmitForm);
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 // Firebase configuration and initialization
 const firebaseConfig = {
@@ -50,7 +50,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   AddPosts()
-
 });
 
 async function addUserIfNotExists(userId, uname, uphoto) {
@@ -233,10 +232,10 @@ async function onSubmitForm(e) {
 }
 
 async function AddPosts() {
-  const postsQuery = collection(db, "posts");
-  const querySnapshot = await getDocs(postsQuery);
-
-  const HomePage = document.querySelector('.MainPage');
+  const postsRef = collection(db, "posts");
+  const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
+  const querySnapshot = await getDocs(postQuery);
+  const HomePage = document.querySelector(".MainPage");
   querySnapshot.forEach((doc) => {
     const { AuthorID, Content, Title } = doc.data();
     const DocId = doc.id;
