@@ -356,7 +356,7 @@ a:visited {
 .MainPage {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   background-color: var(--main-bg);
   min-height: 100%;
 }
@@ -543,18 +543,18 @@ input#Content {
 
 .PostDivs {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 300px;
-  width: 400px;
+  align-content: center;
+  height: 30px;
+  width: 70%;
   background-color:rgb(160, 160, 160);
   box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
   border-radius: 20px;
-  margin-top: 30px;
   animation: 1.5s PostDivs;
+  margin-left: 130px;
+  overflow: hidden;
+  padding-left: 15px;
+  transition: height 750ms;;
+  will-change: height;
 }
 
 @keyframes PostDivs {
@@ -566,6 +566,9 @@ input#Content {
   }
 }
 
+.PostDivs:hover {
+  height: 100px;
+}
 
 #dashHeader {
   top: 35px;
