@@ -303,6 +303,7 @@
 
 .TopNavigation {
   display: grid;
+  top: 0px;
   grid-template-columns: 1fr 2fr;
   color:rgb(121, 121, 121);
   font-weight: 500;
@@ -377,7 +378,7 @@ a:visited {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   right: 110px;
   top: 100px;
   height: 80px;
@@ -536,26 +537,58 @@ dialog::backdrop {
 
 input#Content {
   padding-bottom: 440px;
+  flex-wrap: wrap;
 }
 .InputSubmission {
   margin-top: 15px;
 }
 
 .PostDivs {
-  display: flex;
-  align-content: center;
-  height: 30px;
+  display: grid; 
+  grid-auto-rows: 1fr; 
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "User-Info Title Title Title Title Timestamp"
+    "Filler Filler Filler Filler Filler Filler"
+    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
+    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
+    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent";
+  height: 48px;
   width: 70%;
-  background-color:rgb(160, 160, 160);
+  background-color: var(--main-bg);
+  border: solid black 1px;
   box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
   border-radius: 20px;
   animation: 1.5s PostDivs;
   margin-left: 130px;
   overflow: hidden;
   padding-left: 15px;
-  transition: height 750ms;;
+  transition: height 750ms;
   will-change: height;
 }
+
+.Timestamp {
+   grid-area: Timestamp; 
+  }
+
+.UserInfo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    grid-area: User-Info; 
+  }
+  
+.Title {
+   grid-area: Title; 
+   display: flex;
+   align-items: center;
+  }
+
+.Content {
+   grid-area: InnerContent; 
+  }
 
 @keyframes PostDivs {
   0% {
@@ -567,7 +600,7 @@ input#Content {
 }
 
 .PostDivs:hover {
-  height: 100px;
+  height: 300px;
 }
 
 #dashHeader {
@@ -589,4 +622,61 @@ input#Content {
 #MainFooter {
   background-color: #c9c4c2;
   height: 150px;
+}
+
+#ProfileIMG {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
+.UserSpan {
+  margin-left: 20px;
+  font-size: 15px;
+  color: rgb(121, 121, 121);
+}
+
+.DeleteButton {
+  position: relative;
+  height: 12px;
+  width: 12px;
+  background-color: red;
+  bottom: 30px;
+  left: 1290px;
+}
+
+
+#DeleteDialog {
+  display: grid;
+  justify-content: center;
+  grid-auto-rows: 1fr; 
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: 1fr 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "Label Label"
+    "Text1 Text2";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 200px; 
+  height: 200px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.DialogLabel {
+  grid-area: Label;
+}
+
+.DialogChild1 {
+  grid-area: Text1;
+  background-color: red;
+}
+
+.DialogChild2 {
+  grid-area: Text2;
 }

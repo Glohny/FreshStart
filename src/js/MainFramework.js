@@ -8,7 +8,7 @@ document.getElementById("PostForm").addEventListener("submit", onSubmitForm);
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, serverTimestamp, addDoc, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 // Firebase configuration and initialization
 const firebaseConfig = {
@@ -48,7 +48,6 @@ onAuthStateChanged(auth, async (user) => {
   } else {
     window.location.href = "index.html";
   }
-
   AddPosts()
 });
 
@@ -232,22 +231,111 @@ async function onSubmitForm(e) {
   location.reload();
 }
 
-async function AddPosts() {
+async function AddPosts(CurrentUser) {
   const postsRef = collection(db, "posts");
   const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
   const querySnapshot = await getDocs(postQuery);
   const HomePage = document.querySelector(".MainPage");
-  querySnapshot.forEach((doc) => {
-    const { AuthorID, Content, Title } = doc.data();
+  querySnapshot.forEach(async (doc) => {
+    const { AuthorID, Content, Title, Timestamp } = doc.data();
     const DocId = doc.id;
-    const PostDivs = CreatePostDiv(Content, Title, AuthorID, DocId);
+    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp, CurrentUser);
     HomePage.appendChild(PostDivs);
   });
 }
 
-function CreatePostDiv(Content, Title, AuthorID, Author, PostID) {
+async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
+
+  const userRef = doc(db, "users", AuthorID);
+  const userSnap = await getDoc(userRef);
+  const { PhotoURL, UserName } = userSnap.data();
+
   const currentDiv = document.createElement("div");
+  currentDiv.setAttribute("post-id", PostID);
   currentDiv.className = "PostDivs";
-  currentDiv.innerHTML = Title + " | " + Content;
+
+  const TimeStampDiv = document.createElement("div");
+  const TimeStampSpan = document.createElement("span");
+  TimeStampSpan.innerHTML = ConvertTime(Timestamp);
+  TimeStampDiv.appendChild(TimeStampSpan);
+  TimeStampDiv.className = "Timestamp";
+
+  const UserInfoDiv = document.createElement("div");
+  
+  const ProfilePicture = document.createElement("img");
+  ProfilePicture.src = PhotoURL;
+  ProfilePicture.className = "UserInfo";
+  ProfilePicture.id = "ProfileIMG";
+  UserInfoDiv.appendChild(ProfilePicture);
+
+  const UserNameSpan = document.createElement("span");
+  UserNameSpan.className = "UserSpan";
+  UserNameSpan.innerHTML = UserName;
+  UserInfoDiv.appendChild(UserNameSpan);
+  UserInfoDiv.className = "UserInfo";
+
+  const TitleDiv = document.createElement("div");
+  const TitleSpan = document.createElement("span");
+  TitleSpan.innerHTML = Title;
+  TitleDiv.appendChild(TitleSpan);
+  TitleDiv.className = "Title";
+
+  const ContentDiv = document.createElement("div");
+  const ContentSpan = document.createElement("span");
+  ContentSpan.innerHTML = Content;
+  ContentDiv.appendChild(ContentSpan);
+  ContentDiv.className = "Content";
+
+  currentDiv.appendChild(UserInfoDiv);
+  currentDiv.appendChild(TimeStampDiv);
+  currentDiv.appendChild(TitleDiv);
+  currentDiv.appendChild(ContentDiv);
+
+  const user = auth.currentUser;
+  const { uid } = user;
+
+  const userRef2 = doc(db, "users", uid);
+  const userSnap2 = await getDoc(userRef2);
+
+  const { IsAdmin } = userSnap2.data();
+
+  if (uid === AuthorID || IsAdmin == true) {
+    const DeleteButton = document.createElement("div");
+    DeleteButton.className = "DeleteButton";
+    currentDiv.appendChild(DeleteButton);
+    DeleteButton.addEventListener("click", async () => {
+      const DeleteDialog =  document.querySelector("#DeleteDialog");
+      DeleteDialog.showModal();
+      document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
+        await deleteDoc(doc(db, "posts", PostID));
+        document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+      })
+      document.querySelector("#NevermindDelete").addEventListener("click", () => {
+        DeleteDialog.close();
+      })
+    })
+  }
+
   return currentDiv;
+}
+
+
+function ConvertTime(Time) {
+
+const date = Time.toDate();
+
+const options = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: true 
+};
+
+const formattedDate = date.toLocaleString('en-US', options); 
+
+return formattedDate; 
+
 }
