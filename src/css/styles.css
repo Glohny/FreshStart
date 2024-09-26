@@ -649,7 +649,6 @@ input#Content {
 #DeleteDialog {
   display: grid;
   justify-content: center;
-  grid-auto-rows: 1fr; 
   grid-template-columns: 1fr 1fr; 
   grid-template-rows: 1fr 1fr; 
   gap: 0px 0px; 
@@ -662,7 +661,6 @@ input#Content {
   transform: translate(-50%, -50%); 
   width: 200px; 
   height: 200px;
-  padding: 20px;
   background: white;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
@@ -670,6 +668,7 @@ input#Content {
 
 .DialogLabel {
   grid-area: Label;
+  text-align: center;
 }
 
 .DialogChild1 {

@@ -303,9 +303,9 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     const DeleteButton = document.createElement("div");
     DeleteButton.className = "DeleteButton";
     currentDiv.appendChild(DeleteButton);
-    DeleteButton.addEventListener("click", async () => {
+    DeleteButton.addEventListener("click", () => {
       const DeleteDialog =  document.querySelector("#DeleteDialog");
-      DeleteDialog.showModal();
+      DeleteDialog.show();
       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
         await deleteDoc(doc(db, "posts", PostID));
         document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
@@ -315,7 +315,6 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
       })
     })
   }
-
   return currentDiv;
 }
 
