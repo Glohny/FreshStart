@@ -303,17 +303,17 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     const DeleteButton = document.createElement("div");
     DeleteButton.className = "DeleteButton";
     currentDiv.appendChild(DeleteButton);
-    DeleteButton.addEventListener("click", () => {
-      const DeleteDialog =  document.querySelector("#DeleteDialog");
-      DeleteDialog.show();
-      document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
-        await deleteDoc(doc(db, "posts", PostID));
-        document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
-      })
-      document.querySelector("#NevermindDelete").addEventListener("click", () => {
-        DeleteDialog.close();
-      })
-    })
+     DeleteButton.addEventListener("click", () => {
+       const DeleteDialog =  document.querySelector("#DeleteDialog");
+       DeleteDialog.show();
+       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
+         await deleteDoc(doc(db, "posts", PostID));
+         document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+       });
+       document.querySelector("#NevermindDelete").addEventListener("click", () => {
+         DeleteDialog.close();
+       });
+     });
   }
   return currentDiv;
 }
