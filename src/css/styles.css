@@ -647,14 +647,6 @@ input#Content {
 
 
 #DeleteDialog {
-  display: grid;
-  justify-content: center;
-  grid-template-columns: 1fr 1fr; 
-  grid-template-rows: 1fr 1fr; 
-  gap: 0px 0px; 
-  grid-template-areas: 
-    "Label Label"
-    "Text1 Text2";
   position: fixed;
   top: 50%;
   left: 50%;

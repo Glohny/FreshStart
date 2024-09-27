@@ -84,6 +84,7 @@ function addUserProfile(uphoto, uname) {
 
   UPhotoIMG.src = uphoto;
   UPhotoIMG.className = "UPhotoIMG";
+  UPhotoIMG.referrerPolicy = "no-referrer";
   UPhotoIMG.alt = ":(";
   NameSpan.innerHTML = uname;
 
@@ -302,8 +303,8 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
   if (uid === AuthorID || IsAdmin == true) {
     const DeleteButton = document.createElement("div");
     DeleteButton.className = "DeleteButton";
-    currentDiv.appendChild(DeleteButton);
      DeleteButton.addEventListener("click", () => {
+      console.log("Opened without perm");
        const DeleteDialog =  document.querySelector("#DeleteDialog");
        DeleteDialog.show();
        document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
@@ -314,6 +315,7 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
          DeleteDialog.close();
        });
      });
+     currentDiv.appendChild(DeleteButton);
   }
   return currentDiv;
 }
