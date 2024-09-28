@@ -232,19 +232,6 @@ async function onSubmitForm(e) {
   location.reload();
 }
 
-async function AddPosts(CurrentUser) {
-  const postsRef = collection(db, "posts");
-  const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
-  const querySnapshot = await getDocs(postQuery);
-  const HomePage = document.querySelector(".MainPage");
-  querySnapshot.forEach(async (doc) => {
-    const { AuthorID, Content, Title, Timestamp } = doc.data();
-    const DocId = doc.id;
-    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp, CurrentUser);
-    HomePage.appendChild(PostDivs);
-  });
-}
-
 async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
 
   const userRef = doc(db, "users", AuthorID);
@@ -287,10 +274,14 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
   ContentDiv.appendChild(ContentSpan);
   ContentDiv.className = "Content";
 
+  const CommentDiv = document.createElement("div");
+  CommentDiv.className = "CommentBox";
+  
   currentDiv.appendChild(UserInfoDiv);
   currentDiv.appendChild(TimeStampDiv);
   currentDiv.appendChild(TitleDiv);
   currentDiv.appendChild(ContentDiv);
+  currentDiv.appendChild(CommentDiv);
 
   const user = auth.currentUser;
   const { uid } = user;
@@ -304,7 +295,8 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     const DeleteButton = document.createElement("button");
     DeleteButton.innerHTML = "X";
     DeleteButton.className = "DeleteButton";
-     DeleteButton.addEventListener("click", () => {
+     DeleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
       console.log("Opened without perm");
        const DeleteDialog =  document.querySelector("#DeleteDialog");
        DeleteDialog.show();
@@ -319,6 +311,11 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
      });
      currentDiv.appendChild(DeleteButton);
   }
+
+  currentDiv.addEventListener("click", () => {
+    currentDiv.classList.toggle('active');
+  })
+
   return currentDiv;
 }
 
@@ -342,3 +339,29 @@ const formattedDate = date.toLocaleString('en-US', options);
 return formattedDate; 
 
 }
+
+function AddComments(AuthorID, Content, Timestamp) {
+
+}
+
+// async function AddPosts() {
+//   const postsRef = collection(db, "posts");
+//   const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
+//   const querySnapshot = await getDocs(postQuery);
+//   const HomePage = document.querySelector(".MainPage");
+//   querySnapshot.forEach(async (doc) => {
+//     const { AuthorID, Content, Title, Timestamp } = doc.data();
+//     const DocId = doc.id;
+//     const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
+
+//     const  commentsRef = await getDocs(collection(db, "posts", "comments"))
+//     const commentsQuery = query(commentsRef, orderBy("Timestamp", "desc"));
+//     const querySnapshot2 = await getDocs(commentsQuery);
+//     const CommentBox = document.querySelector()
+//     querySnapshot2.forEach(async (doc) => {
+//       const { AuthorID, Content, Timestamp } = doc.data();
+//       AddComments(AuthorID, Content, Timestamp)
+//     })
+//     HomePage.appendChild(PostDivs);
+//   });
+// }
