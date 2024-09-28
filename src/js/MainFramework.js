@@ -1,4 +1,4 @@
-document.querySelector(".AddButton").addEventListener("click", function() {
+document.querySelector(".AddButton").addEventListener("click", () => {
   document.querySelector("#MainDialog").showModal();
 })
 
@@ -301,7 +301,8 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
   const { IsAdmin } = userSnap2.data();
 
   if (uid === AuthorID || IsAdmin == true) {
-    const DeleteButton = document.createElement("div");
+    const DeleteButton = document.createElement("button");
+    DeleteButton.innerHTML = "X";
     DeleteButton.className = "DeleteButton";
      DeleteButton.addEventListener("click", () => {
       console.log("Opened without perm");
@@ -310,6 +311,7 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
        document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
          await deleteDoc(doc(db, "posts", PostID));
          document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+         DeleteDialog.close();
        });
        document.querySelector("#NevermindDelete").addEventListener("click", () => {
          DeleteDialog.close();

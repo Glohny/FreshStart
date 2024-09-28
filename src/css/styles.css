@@ -527,7 +527,6 @@ dialog::backdrop {
 }
 
 #PostForm {
-  display: grid;
   width: 450px;
 }
 
@@ -535,11 +534,12 @@ dialog::backdrop {
   display: grid;
 }
 
-input#Content {
+textarea#Content {
+  resize: none;
   padding-bottom: 440px;
-  flex-wrap: wrap;
 }
 .InputSubmission {
+  width: 100%;
   margin-top: 15px;
 }
 
@@ -551,7 +551,7 @@ input#Content {
   gap: 0px 0px; 
   grid-template-areas: 
     "User-Info Title Title Title Title Timestamp"
-    "Filler Filler Filler Filler Filler Filler"
+    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent";
@@ -567,6 +567,8 @@ input#Content {
   padding-left: 15px;
   transition: height 750ms;
   will-change: height;
+  text-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .Timestamp {
@@ -584,6 +586,8 @@ input#Content {
    grid-area: Title; 
    display: flex;
    align-items: center;
+   font-weight: 1000;
+   font-size: 20px;
   }
 
 .Content {
@@ -637,12 +641,18 @@ input#Content {
 }
 
 .DeleteButton {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  justify-self: flex-end;
+  align-self: center;
+  grid-area: Timestamp;
   height: 12px;
   width: 12px;
   background-color: red;
-  bottom: 25px;
-  left: 67vw;
+  border-radius: 5px;
 }
 
 

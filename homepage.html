@@ -29,11 +29,11 @@
             <form id = "PostForm">
                 <div class = "InputBar"> 
                     <label for="Title">Title</label>
-                    <input type="text" id="Title" required>
+                    <input type="text" id="Title" maxlength="80" required>
                 </div>
                 <div class = "InputBar">
                     <label for="Content">Content</label>
-                    <input type="text" id="Content" required>
+                    <textarea id="Content" maxlength="1000" required></textarea>
                 </div>
                 <input type="submit" class ="InputSubmission" value="Post">
             </form>
