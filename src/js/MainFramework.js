@@ -36,19 +36,22 @@ onAuthStateChanged(auth, async (user) => {
       document.querySelector(".loader").style.visibility = "hidden";
       addUserProfile(uphoto, uname);
       setupAdminPanel();
+      AddPosts()
     } else if (rank === "Senior" && document.querySelector(".Grabbable") == null) {
       document.querySelector(".loader").style.visibility = "hidden";
       addUserProfile(uphoto, uname);
       displaySeniorBadge();
+      AddPosts()
     }
     else if (rank === null && document.querySelector(".Grabbable") == null) {
       document.querySelector(".loader").style.visibility = "hidden";
       addUserProfile(uphoto, uname);
+      AddPosts()
     }
   } else {
     window.location.href = "index.html";
   }
-  AddPosts()
+  
 });
 
 async function addUserIfNotExists(userId, uname, uphoto) {
@@ -236,7 +239,7 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
 
   const userRef = doc(db, "users", AuthorID);
   const userSnap = await getDoc(userRef);
-  const { PhotoURL, UserName } = userSnap.data();
+  const { PhotoURL, UserName, IsSenior, IsAdmin:IsUserAdmin } = userSnap.data();
 
   const currentDiv = document.createElement("div");
   currentDiv.setAttribute("post-id", PostID);
@@ -258,6 +261,15 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
 
   const UserNameSpan = document.createElement("span");
   UserNameSpan.className = "UserSpan";
+  if (IsUserAdmin) {
+    UserNameSpan.style.color = "red";
+  }
+  else if (IsSenior) {
+    UserNameSpan.style.color = "blue";
+  }
+  else {
+    UserNameSpan.style.color = "rgb(121, 121, 121)";
+  }
   UserNameSpan.innerHTML = UserName;
   UserInfoDiv.appendChild(UserNameSpan);
   UserInfoDiv.className = "UserInfo";
@@ -295,73 +307,176 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     const DeleteButton = document.createElement("button");
     DeleteButton.innerHTML = "X";
     DeleteButton.className = "DeleteButton";
-     DeleteButton.addEventListener("click", (event) => {
+    DeleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
       console.log("Opened without perm");
-       const DeleteDialog =  document.querySelector("#DeleteDialog");
-       DeleteDialog.show();
-       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
-         await deleteDoc(doc(db, "posts", PostID));
-         document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
-         DeleteDialog.close();
-       });
-       document.querySelector("#NevermindDelete").addEventListener("click", () => {
-         DeleteDialog.close();
-       });
-     });
-     currentDiv.appendChild(DeleteButton);
+      const DeleteDialog =  document.querySelector("#DeleteDialog");
+      DeleteDialog.show();
+      document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
+        await deleteDoc(doc(db, "posts", PostID));
+        document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+        DeleteDialog.close();
+      });
+      document.querySelector("#NevermindDelete").addEventListener("click", () => {
+        DeleteDialog.close();
+      });
+    });
+    currentDiv.appendChild(DeleteButton);
   }
+
+   // Create form element with class 'CommentForm'
+  const commentForm = document.createElement('form');
+  commentForm.className = 'CommentForm';
+
+   // Create the text box input with class 'CommentTextBox'
+  const commentTextBox = document.createElement('input');
+  commentTextBox.type = 'text';
+  commentTextBox.className = 'CommentTextBox';
+   commentTextBox.name = 'comment'; // Optional: Assign name for form submission
+
+   // Create the submit button with class 'CommentSubmitButton'
+  const submitButton = document.createElement('button');
+  submitButton.type = 'submit';
+  submitButton.className = 'CommentSubmitButton';
+  submitButton.textContent = 'Submit';
+  commentForm.addEventListener("submit", onSubmitComment);
+
+   // Append inputs to form
+  commentForm.appendChild(commentTextBox);
+  commentForm.appendChild(submitButton);
+  currentDiv.appendChild(commentForm);
 
   currentDiv.addEventListener("click", () => {
     currentDiv.classList.toggle('active');
   })
 
+  commentTextBox.addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
+  submitButton.addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
   return currentDiv;
 }
 
+async function AddComments(PostDiv, PostID) {
+  const  commentsRef = await collection(db, "posts", PostID, "comments")
+  const commentsQuery = query(commentsRef, orderBy("Timestamp", "desc"));
+  const querySnapshot = await getDocs(commentsQuery);
+  
+  querySnapshot.forEach(async (info) => {
+    const { AuthorID, Content, Timestamp } = info.data();
+    const CommentBox = document.createElement("div");
+    CommentBox.className = "ContainerCommentBox";
+    const ProfileBox = document.createElement("div");
+    ProfileBox.className = "ProfileBox2";
+    const ContentBox = document.createElement("div");
+    ContentBox.className = "ContentBox";
 
-function ConvertTime(Time) {
+  const userRef = doc(db, "users", AuthorID);
+  const userSnap = await getDoc(userRef);
+  const { PhotoURL, UserName, IsSenior, IsAdmin } = userSnap.data();
 
-const date = Time.toDate();
 
-const options = { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric', 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit',
-    hour12: true 
-};
+    const UserProfileArea = document.createElement("span");
+    UserProfileArea.className = "UserProfileArea";
+    
+    const UserProfilePicture = document.createElement("img");
+    UserProfilePicture.src = "PhotoURL";
+    UserProfileArea.appendChild(UserProfilePicture)
 
-const formattedDate = date.toLocaleString('en-US', options); 
+    UserProfileArea.innerHTMl = UserName;
 
-return formattedDate; 
+    const TimeArea = document.createElement("span");
+    UserProfileArea.className = "TimeArea";
+    TimeArea.innerHTML = ConvertTime(Timestamp);
 
+    CommentBox.appendChild(ProfileBox);
+    CommentBox.appendChild(ContentBox);
+
+    PostDiv.querySelector(".CommentBox").appendChild(CommentBox);
+
+  })
 }
 
-function AddComments(AuthorID, Content, Timestamp) {
-
+async function AddPosts() {
+  const postsRef = collection(db, "posts");
+  const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
+  const querySnapshot = await getDocs(postQuery);
+  const HomePage = document.querySelector(".MainPage");
+  querySnapshot.forEach(async (doc) => {
+    const { AuthorID, Content, Title, Timestamp } = doc.data();
+    const DocId = doc.id;
+    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
+    AddComments(PostDivs, DocId);
+    HomePage.appendChild(PostDivs);
+  });
 }
 
-// async function AddPosts() {
-//   const postsRef = collection(db, "posts");
-//   const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
-//   const querySnapshot = await getDocs(postQuery);
-//   const HomePage = document.querySelector(".MainPage");
-//   querySnapshot.forEach(async (doc) => {
-//     const { AuthorID, Content, Title, Timestamp } = doc.data();
-//     const DocId = doc.id;
-//     const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
+async function onSubmitComment(e) {
+  e.preventDefault();
 
-//     const  commentsRef = await getDocs(collection(db, "posts", "comments"))
-//     const commentsQuery = query(commentsRef, orderBy("Timestamp", "desc"));
-//     const querySnapshot2 = await getDocs(commentsQuery);
-//     const CommentBox = document.querySelector()
-//     querySnapshot2.forEach(async (doc) => {
-//       const { AuthorID, Content, Timestamp } = doc.data();
-//       AddComments(AuthorID, Content, Timestamp)
-//     })
-//     HomePage.appendChild(PostDivs);
-//   });
-// }
+  // Get the parent post div from the form
+  const postDiv = e.target.closest('.PostDivs');
+  const postId = postDiv.getAttribute('post-id');  // Get the post ID from the parent div
+
+  const commentInput = e.target.querySelector('.CommentTextBox'); // Find the comment input
+  const AuthorID = auth.currentUser.uid; 
+  const Content = commentInput.value;  // Get the content of the comment input
+  const Timestamp = serverTimestamp();
+
+  if (Content.trim() === "") {
+      alert("Comment cannot be empty");
+      return;
+  }
+
+  // Add the comment to the specific post
+  await addDoc(collection(db, "posts", postId, "comments"), {
+      AuthorID: AuthorID,
+      Content: Content,
+      Timestamp: Timestamp,
+      Rank: await fetchRank(AuthorID)
+  });
+
+  const userRef = doc(db, "users", AuthorID);
+  const userSnap = await getDoc(userRef);
+  const { PhotoURL, UserName, IsSenior, IsAdmin } = userSnap.data();
+
+  const CommentBox = document.createElement("div");
+  CommentBox.className = "ContainerCommentBox";
+  const ProfileBox = document.createElement("div");
+  ProfileBox.className = "ProfileBox2";
+  const ContentBox = document.createElement("div");
+  ContentBox.className = "ContentBox";
+
+  ProfileBox.innerHTML = UserName; // + //ConvertTime(serverTimestamp())
+  ContentBox.innerHTML = Content;
+
+  CommentBox.appendChild(ProfileBox);
+  CommentBox.appendChild(ContentBox);
+
+  postDiv.querySelector(".CommentBox").appendChild(CommentBox);
+
+  // Reset the form and update the comments section dynamically
+  e.target.reset();  // Reset the form fields
+}
+
+  function ConvertTime(TimestampString) {
+
+    const date = TimestampString.toDate();
+    
+    const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: true 
+    };
+    
+    return date.toLocaleString('en-US', options); 
+    
+  }

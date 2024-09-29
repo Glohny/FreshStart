@@ -385,14 +385,18 @@ a:visited {
   width: 150px;
   font-size: 25px;
   border: none;
-  background-color: rgb(63, 220, 48);
+  background-color: greenyellow;
   color: var(--main-wt-txt-clr);
   border-radius: 80px;
   font-family: Noto;
 }
 
+.AddButton_Plus {
+  color: var(--main-txt-clr);
+}
+
 .AddButton:hover {
-  background-color: rgb(59, 203, 46);
+  background-color: greenyellow;
 }
 
 .AddButton:active {
@@ -555,8 +559,9 @@ textarea#Content {
     "User-Info Title Title Title Title Timestamp"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
-    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
-    "Comments Comments Comments Comments Comments Comments";
+    "Comments Comments Comments Comments Comments Comments"
+    "Comments Comments Comments Comments Comments Comments"
+    "CommentInput CommentInput CommentInput CommentInput CommentInput CommentInput";
   height: 48px;
   width: 70%;
   background-color: var(--main-bg);
@@ -574,16 +579,16 @@ textarea#Content {
 
 .CommentBox {
   grid-area: Comments;
-  background-color:#c2c5c3;
+  background-color: var(--main-bg);
   margin-left: -15px;
 }
 
 .active {
-  height: 300px;
+  height: 500px;
 }
 
 .Timestamp {
-   grid-area: Timestamp; 
+  grid-area: Timestamp; 
   }
 
 .UserInfo {
@@ -594,16 +599,21 @@ textarea#Content {
   }
   
 .Title {
-   grid-area: Title; 
-   display: flex;
-   align-items: center;
-   font-weight: 1000;
-   font-size: 20px;
+  grid-area: Title; 
+  display: flex;
+  align-items: center;
+  font-weight: 1000;
+  font-size: 20px;
   }
 
 .Content {
-   grid-area: InnerContent; 
+  grid-area: InnerContent; 
   }
+
+.ContentBox {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
 
 @keyframes PostDivs {
   0% {
@@ -644,7 +654,6 @@ textarea#Content {
 .UserSpan {
   margin-left: 20px;
   font-size: 15px;
-  color: rgb(121, 121, 121);
 }
 
 .DeleteButton {
@@ -693,10 +702,37 @@ textarea#Content {
   display: grid;
 }
 
-.ProfileBox {
-  
+.ProfileBox2 {
+  display: flex;
+  margin-top: 5px;
 }
 
 .CommentBox {
+  overflow: auto;
+}
 
+.CommentForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: CommentInput;
+}
+
+.CommentTextBox {
+  justify-self: center;
+  width: 1200px;
+  height: 50px;
+  border: none;
+  background-color: rgb(224, 219, 219);
+  border-radius: 15px;
+  margin-right: 5px;
+}
+
+.CommentSubmitButton {
+  justify-self: flex-end;
+  border: none;
+  background-color: greenyellow;
+  border-radius: 15px;
+  height: 50px;
+  color: var(--main-txt-clr);
 }
