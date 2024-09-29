@@ -316,7 +316,6 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     DeleteButton.className = "DeleteButton";
     DeleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
-      console.log("Opened without perm");
       const DeleteDialog =  document.querySelector("#DeleteDialog");
       DeleteDialog.show();
       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
@@ -351,7 +350,10 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
    // Append inputs to form
   commentForm.appendChild(commentTextBox);
   commentForm.appendChild(submitButton);
+  const LR = document.createElement("hr");
+  currentDiv.appendChild(LR);
   currentDiv.appendChild(commentForm);
+
 
   currentDiv.addEventListener("click", () => {
     currentDiv.classList.toggle('active');
