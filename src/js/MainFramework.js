@@ -271,6 +271,13 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
     UserNameSpan.style.color = "rgb(121, 121, 121)";
   }
   UserNameSpan.innerHTML = UserName;
+  if (UserName.length >= 10) {
+    UserNameSpan.style.fontSize = "15px";
+  }
+
+  if (UserName.length >= 15) {
+    UserNameSpan.style.fontSize = "10px";
+  }
   UserInfoDiv.appendChild(UserNameSpan);
   UserInfoDiv.className = "UserInfo";
 
@@ -374,25 +381,27 @@ async function AddComments(PostDiv, PostID) {
     ProfileBox.className = "ProfileBox2";
     const ContentBox = document.createElement("div");
     ContentBox.className = "ContentBox";
+    ContentBox.innerHTML = Content;
 
   const userRef = doc(db, "users", AuthorID);
   const userSnap = await getDoc(userRef);
   const { PhotoURL, UserName, IsSenior, IsAdmin } = userSnap.data();
-
-
+    
     const UserProfileArea = document.createElement("span");
     UserProfileArea.className = "UserProfileArea";
+    UserProfileArea.innerHTML = UserName;
     
     const UserProfilePicture = document.createElement("img");
-    UserProfilePicture.src = "PhotoURL";
+    UserProfilePicture.src = PhotoURL;
     UserProfileArea.appendChild(UserProfilePicture)
-
-    UserProfileArea.innerHTMl = UserName;
+    UserProfilePicture.className = "ProfileIMGS";
 
     const TimeArea = document.createElement("span");
-    UserProfileArea.className = "TimeArea";
+    TimeArea.className = "TimeArea";
     TimeArea.innerHTML = ConvertTime(Timestamp);
 
+    ProfileBox.appendChild(UserProfileArea);
+    ProfileBox.appendChild(TimeArea);
     CommentBox.appendChild(ProfileBox);
     CommentBox.appendChild(ContentBox);
 
@@ -424,8 +433,9 @@ async function onSubmitComment(e) {
 
   const commentInput = e.target.querySelector('.CommentTextBox'); // Find the comment input
   const AuthorID = auth.currentUser.uid; 
-  const Content = commentInput.value;  // Get the content of the comment input
-  const Timestamp = serverTimestamp();
+  const Content = commentInput.value;  // Get the content of the comment inpu
+  
+  e.target.reset();  
 
   if (Content.trim() === "") {
       alert("Comment cannot be empty");
@@ -436,7 +446,7 @@ async function onSubmitComment(e) {
   await addDoc(collection(db, "posts", postId, "comments"), {
       AuthorID: AuthorID,
       Content: Content,
-      Timestamp: Timestamp,
+      Timestamp: serverTimestamp(),
       Rank: await fetchRank(AuthorID)
   });
 
@@ -445,22 +455,35 @@ async function onSubmitComment(e) {
   const { PhotoURL, UserName, IsSenior, IsAdmin } = userSnap.data();
 
   const CommentBox = document.createElement("div");
-  CommentBox.className = "ContainerCommentBox";
-  const ProfileBox = document.createElement("div");
-  ProfileBox.className = "ProfileBox2";
-  const ContentBox = document.createElement("div");
-  ContentBox.className = "ContentBox";
+    CommentBox.className = "ContainerCommentBox";
+    const ProfileBox = document.createElement("div");
+    ProfileBox.className = "ProfileBox2";
+    const ContentBox = document.createElement("div");
+    ContentBox.className = "ContentBox";
+    ContentBox.innerHTML = Content;
 
-  ProfileBox.innerHTML = UserName; // + //ConvertTime(serverTimestamp())
-  ContentBox.innerHTML = Content;
+  const UserProfileArea = document.createElement("span");
+    UserProfileArea.className = "UserProfileArea";
+    UserProfileArea.innerHTML = UserName;
+    
+    const UserProfilePicture = document.createElement("img");
+    UserProfilePicture.src = PhotoURL;
+    UserProfileArea.appendChild(UserProfilePicture)
+    UserProfilePicture.className = "ProfileIMGS";
 
-  CommentBox.appendChild(ProfileBox);
-  CommentBox.appendChild(ContentBox);
+    const TimeArea = document.createElement("span");
+    TimeArea.className = "TimeArea";
+    TimeArea.innerHTML = "now";
 
-  postDiv.querySelector(".CommentBox").appendChild(CommentBox);
+    ProfileBox.appendChild(UserProfileArea);
+    ProfileBox.appendChild(TimeArea);
+    CommentBox.appendChild(ProfileBox);
+    CommentBox.appendChild(ContentBox);
 
-  // Reset the form and update the comments section dynamically
-  e.target.reset();  // Reset the form fields
+    const CommentArea = postDiv.querySelector(".CommentBox");
+    const AllComments = CommentArea.querySelectorAll(".ContainerCommentBox");
+
+    CommentArea.insertBefore(CommentBox, AllComments[0]);
 }
 
   function ConvertTime(TimestampString) {

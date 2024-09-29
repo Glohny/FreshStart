@@ -553,15 +553,15 @@ textarea#Content {
   display: grid; 
   grid-auto-rows: 1fr; 
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  grid-template-rows: .25fr 1fr 1fr 1fr 1fr 1fr; 
   gap: 0px 0px; 
   grid-template-areas: 
     "User-Info Title Title Title Title Timestamp"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
+    "CommentInput CommentInput CommentInput CommentInput CommentInput CommentInput"
     "Comments Comments Comments Comments Comments Comments"
-    "Comments Comments Comments Comments Comments Comments"
-    "CommentInput CommentInput CommentInput CommentInput CommentInput CommentInput";
+    "Comments Comments Comments Comments Comments Comments";
   height: 48px;
   width: 70%;
   background-color: var(--main-bg);
@@ -571,7 +571,6 @@ textarea#Content {
   animation: 1.5s PostDivs;
   margin-left: 130px;
   overflow: hidden;
-  padding-left: 15px;
   transition: height .75s;
   will-change: height;
   overflow-wrap: break-word;
@@ -580,11 +579,10 @@ textarea#Content {
 .CommentBox {
   grid-area: Comments;
   background-color: var(--main-bg);
-  margin-left: -15px;
 }
 
 .active {
-  height: 500px;
+  height: 800px;
 }
 
 .Timestamp {
@@ -596,7 +594,8 @@ textarea#Content {
     align-items: center;
     justify-content: flex-start;
     grid-area: User-Info; 
-  }
+    margin-left: 5px;
+}
   
 .Title {
   grid-area: Title; 
@@ -608,11 +607,13 @@ textarea#Content {
 
 .Content {
   grid-area: InnerContent; 
+  margin-left: 5px;
   }
 
 .ContentBox {
   overflow-wrap: break-word;
   word-wrap: break-word;
+  margin-left: 55px;
 }
 
 @keyframes PostDivs {
@@ -651,9 +652,16 @@ textarea#Content {
   width: 45px;
 }
 
+.ProfileIMGS {
+  margin-right: 10px;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
 .UserSpan {
   margin-left: 20px;
-  font-size: 15px;
+  font-size: 25px;
 }
 
 .DeleteButton {
@@ -700,11 +708,13 @@ textarea#Content {
 
 .ContainerCommentBox {
   display: grid;
+  margin-top: 15px;
 }
 
 .ProfileBox2 {
   display: flex;
-  margin-top: 5px;
+  justify-content: flex-start;
+  margin-left: 5px;
 }
 
 .CommentBox {
@@ -713,14 +723,14 @@ textarea#Content {
 
 .CommentForm {
   display: flex;
+  justify-items: center;
   justify-content: center;
   align-items: center;
   grid-area: CommentInput;
 }
 
 .CommentTextBox {
-  justify-self: center;
-  width: 1200px;
+  width: 85%;
   height: 50px;
   border: none;
   background-color: rgb(224, 219, 219);
@@ -735,4 +745,20 @@ textarea#Content {
   border-radius: 15px;
   height: 50px;
   color: var(--main-txt-clr);
+  margin-left: 5px;
+}
+
+.TimeArea {
+  display: flex;
+  align-items: center;
+  color: rgb(121, 121, 121);
+
+}
+
+.UserProfileArea {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction:row-reverse;
+  margin-right: 10px;
 }
