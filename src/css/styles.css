@@ -553,15 +553,15 @@ textarea#Content {
   display: grid; 
   grid-auto-rows: 1fr; 
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
-  grid-template-rows: .25fr 1fr 1fr 1fr 1fr 1fr; 
+  grid-template-rows: .25fr 1fr 1fr 1fr 1fr; 
   gap: 0px 0px; 
   grid-template-areas: 
     "User-Info Title Title Title Title Timestamp"
     "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
-    "InnerContent InnerContent InnerContent InnerContent InnerContent InnerContent"
     "CommentInput CommentInput CommentInput CommentInput CommentInput CommentInput"
     "Comments Comments Comments Comments Comments Comments"
     "Comments Comments Comments Comments Comments Comments";
+
   height: 48px;
   width: 70%;
   background-color: var(--main-bg);

@@ -320,8 +320,8 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
       const DeleteDialog =  document.querySelector("#DeleteDialog");
       DeleteDialog.show();
       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
-        await deleteDoc(doc(db, "posts", PostID));
         document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+        await deleteDoc(doc(db, "posts", PostID));
         DeleteDialog.close();
       });
       document.querySelector("#NevermindDelete").addEventListener("click", () => {
