@@ -125,6 +125,13 @@ function createAdminBadge() {
   return AdminBadge;
 }
 
+function createAdminBadge2() {
+  const AdminBadge = document.createElement("div");
+  AdminBadge.className = "AdminBadge2";
+  AdminBadge.innerHTML = "Admin";
+  return AdminBadge;
+}
+
 function createRolesSection() {
   const Roles = document.createElement("div");
   Roles.className = "Roles";
@@ -391,18 +398,35 @@ async function AddComments(PostDiv, PostID) {
     
     const UserProfileArea = document.createElement("span");
     UserProfileArea.className = "UserProfileArea";
-    UserProfileArea.innerHTML = UserName;
-    
+
+    const UserUserNameArea = document.createElement("div");
+    UserUserNameArea.innerHTML = UserName;
+
     const UserProfilePicture = document.createElement("img");
     UserProfilePicture.src = PhotoURL;
+    
     UserProfileArea.appendChild(UserProfilePicture)
     UserProfilePicture.className = "ProfileIMGS";
+
+    UserProfileArea.appendChild(UserUserNameArea);
+
+    
+    if (IsAdmin) {
+      UserProfileArea.appendChild(createAdminBadge2());
+    }
+    else if (IsSenior){
+      const SeniorBadge = document.createElement("div");
+      SeniorBadge.className = "SeniorBadge2";
+      SeniorBadge.innerHTML = "Senior";
+      UserProfileArea.appendChild(SeniorBadge);
+    }
 
     const TimeArea = document.createElement("span");
     TimeArea.className = "TimeArea";
     TimeArea.innerHTML = ConvertTime(Timestamp);
 
     ProfileBox.appendChild(UserProfileArea);
+    
     ProfileBox.appendChild(TimeArea);
     CommentBox.appendChild(ProfileBox);
     CommentBox.appendChild(ContentBox);
@@ -435,58 +459,81 @@ async function onSubmitComment(e) {
 
   const commentInput = e.target.querySelector('.CommentTextBox'); // Find the comment input
   const AuthorID = auth.currentUser.uid; 
-  const Content = commentInput.value;  // Get the content of the comment inpu
+  const Content = commentInput.value;  // Get the content of the comment input
   
   e.target.reset();  
 
   if (Content.trim() === "") {
-      alert("Comment cannot be empty");
-      return;
+    alert("Comment cannot be empty");
+    return;
   }
 
   // Add the comment to the specific post
   await addDoc(collection(db, "posts", postId, "comments"), {
-      AuthorID: AuthorID,
-      Content: Content,
-      Timestamp: serverTimestamp(),
-      Rank: await fetchRank(AuthorID)
+    AuthorID: AuthorID,
+    Content: Content,
+    Timestamp: serverTimestamp(),
+    Rank: await fetchRank(AuthorID)
   });
 
+  // Fetch user info
   const userRef = doc(db, "users", AuthorID);
   const userSnap = await getDoc(userRef);
   const { PhotoURL, UserName, IsSenior, IsAdmin } = userSnap.data();
 
+  // Create CommentBox structure
   const CommentBox = document.createElement("div");
-    CommentBox.className = "ContainerCommentBox";
-    const ProfileBox = document.createElement("div");
-    ProfileBox.className = "ProfileBox2";
-    const ContentBox = document.createElement("div");
-    ContentBox.className = "ContentBox";
-    ContentBox.innerHTML = Content;
+  CommentBox.className = "ContainerCommentBox";
+
+  const ProfileBox = document.createElement("div");
+  ProfileBox.className = "ProfileBox2";
+
+  const ContentBox = document.createElement("div");
+  ContentBox.className = "ContentBox";
+  ContentBox.innerHTML = Content;
 
   const UserProfileArea = document.createElement("span");
-    UserProfileArea.className = "UserProfileArea";
-    UserProfileArea.innerHTML = UserName;
-    
-    const UserProfilePicture = document.createElement("img");
-    UserProfilePicture.src = PhotoURL;
-    UserProfileArea.appendChild(UserProfilePicture)
-    UserProfilePicture.className = "ProfileIMGS";
+  UserProfileArea.className = "UserProfileArea";
 
-    const TimeArea = document.createElement("span");
-    TimeArea.className = "TimeArea";
-    TimeArea.innerHTML = "now";
+  const UserUserNameArea = document.createElement("div");
+  UserUserNameArea.innerHTML = UserName;
 
-    ProfileBox.appendChild(UserProfileArea);
-    ProfileBox.appendChild(TimeArea);
-    CommentBox.appendChild(ProfileBox);
-    CommentBox.appendChild(ContentBox);
+  const UserProfilePicture = document.createElement("img");
+  UserProfilePicture.src = PhotoURL;
+  UserProfilePicture.className = "ProfileIMGS";
 
-    const CommentArea = postDiv.querySelector(".CommentBox");
-    const AllComments = CommentArea.querySelectorAll(".ContainerCommentBox");
+  // Append user profile picture and name
+  UserProfileArea.appendChild(UserProfilePicture);
+  UserProfileArea.appendChild(UserUserNameArea);
 
-    CommentArea.insertBefore(CommentBox, AllComments[0]);
+  // Add Admin or Senior Badge
+  if (IsAdmin) {
+    UserProfileArea.appendChild(createAdminBadge2());
+  } else if (IsSenior) {
+    const SeniorBadge = document.createElement("div");
+    SeniorBadge.className = "SeniorBadge2";
+    SeniorBadge.innerHTML = "Senior";
+    UserProfileArea.appendChild(SeniorBadge);
+  }
+
+  // Create and append the timestamp
+  const TimeArea = document.createElement("span");
+  TimeArea.className = "TimeArea";
+  TimeArea.innerHTML = "now";  // Since the comment is just added
+
+  ProfileBox.appendChild(UserProfileArea);
+  ProfileBox.appendChild(TimeArea);
+
+  // Append profile box and content box to the CommentBox
+  CommentBox.appendChild(ProfileBox);
+  CommentBox.appendChild(ContentBox);
+
+  // Insert the comment at the top of the comment section
+  const CommentArea = postDiv.querySelector(".CommentBox");
+  const AllComments = CommentArea.querySelectorAll(".ContainerCommentBox");
+  CommentArea.insertBefore(CommentBox, AllComments[0]);
 }
+
 
   function ConvertTime(TimestampString) {
 

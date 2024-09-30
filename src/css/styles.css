@@ -440,6 +440,20 @@ a:visited {
   background-color: whitesmoke;
 }
 
+.SeniorBadge2 {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12.5px;
+  height: 1vw;
+  width: 2.5vw;
+  color: rgb(79, 79, 255);
+  outline: solid rgb(93, 93, 237);
+  background-color: whitesmoke;
+  margin-left: 15px;
+}
+
 .AdminBadge {
   font-size: 30px;
   display: flex;
@@ -451,6 +465,20 @@ a:visited {
   color: rgb(255, 79, 82);
   outline: solid rgb(237, 93, 93);
   background-color: whitesmoke;
+}
+
+.AdminBadge2 {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12.5px;
+  height: 1vw;
+  width: 2.5vw;
+  color: rgb(255, 79, 82);
+  outline: solid rgb(237, 93, 93);
+  background-color: whitesmoke;
+  margin-left: 15px;
 }
 
 .Roles {
@@ -767,6 +795,5 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  flex-direction:row-reverse;
   margin-right: 10px;
 }
