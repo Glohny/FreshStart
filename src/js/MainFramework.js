@@ -436,7 +436,7 @@ async function AddComments(PostDiv, PostID) {
     PostDiv.querySelector(".CommentBox").appendChild(CommentBox);
 
 
-    const user = auth.currentUser;
+  const user = auth.currentUser;
   const { uid } = user;
 
   const userRef2 = doc(db, "users", uid);
