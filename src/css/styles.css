@@ -651,6 +651,7 @@ hr {
   overflow-wrap: break-word;
   word-wrap: break-word;
   margin-left: 55px;
+  overflow:auto;
 }
 
 @keyframes PostDivs {
@@ -716,8 +717,36 @@ hr {
   border-radius: 5px;
 }
 
+.DeleteButton2 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  justify-self: flex-end;
+  align-self: center;
+  grid-area: Timestamp;
+  height: 12px;
+  width: 12px;
+  background-color: red;
+  border-radius: 5px;
+}
+
 
 #DeleteDialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 200px; 
+  height: 200px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+#DeleteDialog2 {
   position: fixed;
   top: 50%;
   left: 50%;

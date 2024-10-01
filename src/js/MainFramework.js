@@ -383,9 +383,11 @@ async function AddComments(PostDiv, PostID) {
   const querySnapshot = await getDocs(commentsQuery);
   
   querySnapshot.forEach(async (info) => {
+    const DocId = info.id;
     const { AuthorID, Content, Timestamp } = info.data();
     const CommentBox = document.createElement("div");
     CommentBox.className = "ContainerCommentBox";
+    CommentBox.setAttribute("comment-id", DocId);
     const ProfileBox = document.createElement("div");
     ProfileBox.className = "ProfileBox2";
     const ContentBox = document.createElement("div");
@@ -433,7 +435,39 @@ async function AddComments(PostDiv, PostID) {
 
     PostDiv.querySelector(".CommentBox").appendChild(CommentBox);
 
-  })
+
+    const user = auth.currentUser;
+  const { uid } = user;
+
+  const userRef2 = doc(db, "users", uid);
+  const userSnap2 = await getDoc(userRef2);
+
+  const { IsAdmin: IsAdmin2 } = userSnap2.data();
+
+  if (uid === AuthorID || IsAdmin2 == true) {
+    const DeleteButton = document.createElement("button");
+    DeleteButton.innerHTML = "X";
+    DeleteButton.className = "DeleteButton2";
+    DeleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const DeleteDialog =  document.querySelector("#DeleteDialog2");
+      DeleteDialog.show();
+      document.querySelector("#ConfirmDelete2").addEventListener("click", async () => {
+        console.log(`post-id="${DocId}"`);
+        const currentElement = document.querySelector(`[comment-id="${DocId}"]`);
+        console.log(currentElement);
+        currentElement.remove();
+        await deleteDoc(doc(db, "posts", PostID, "comments", DocId));
+        DeleteDialog.close();
+      });
+      document.querySelector("#NevermindDelete2").addEventListener("click", () => {
+        DeleteDialog.close();
+      });
+    });
+    ProfileBox.appendChild(DeleteButton);
+  }
+
+  });
 }
 
 async function AddPosts() {
