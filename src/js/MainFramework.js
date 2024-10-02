@@ -616,7 +616,10 @@ async function deleteComment(PostId, CommentId) {
 }
 
 function CollapseAll() {
-  console.log("hello");
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // for a smooth scrolling effect
+  })
   const PostList = document.querySelectorAll(".PostDivs.active");
   PostList[0].classList.toggle("active");
   for (let i = 1; i < PostList.length; i++) {
