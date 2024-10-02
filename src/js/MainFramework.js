@@ -474,12 +474,14 @@ async function AddPosts() {
   const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
   const querySnapshot = await getDocs(postQuery);
   const HomePage = document.querySelector(".MainPage");
+  let i = 1;
   querySnapshot.forEach(async (doc) => {
     const { AuthorID, Content, Title, Timestamp } = doc.data();
     const DocId = doc.id;
     const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
     AddComments(PostDivs, DocId);
-    HomePage.appendChild(PostDivs);
+    setTimeout(() => { HomePage.appendChild(PostDivs); }, i * 50);
+    i++;
   });
 }
 
