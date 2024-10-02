@@ -746,6 +746,16 @@ hr {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
+.innerBox {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-areas: 
+  "title title"
+  "Box1 Box2";
+  grid-template-columns: 1fr 1fr;
+}
+
 #DeleteDialog2 {
   position: fixed;
   top: 50%;
@@ -759,17 +769,17 @@ hr {
 }
 
 .DialogLabel {
-  grid-area: Label;
+  grid-area: title;
   text-align: center;
 }
 
 .DialogChild1 {
-  grid-area: Text1;
+  grid-area: Box2;
   background-color: red;
 }
 
 .DialogChild2 {
-  grid-area: Text2;
+  grid-area: Box1;
 }
 
 .ContainerCommentBox {
@@ -825,6 +835,18 @@ hr {
   align-items: center;
   justify-content: space-evenly;
   margin-right: 10px;
+}
+
+.CollapseArea {
+  border: none;
+  outline: none;
+  background-color: rgb(224, 219, 219);
+  position: fixed;
+  right: 120px;
+  top: 200px;
+  padding-left: 16px;
+  padding-right: 16px;
+  
 }
 
 

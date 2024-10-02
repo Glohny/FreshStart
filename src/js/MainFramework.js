@@ -1,8 +1,12 @@
 document.querySelector(".AddButton").addEventListener("click", () => {
   document.querySelector("#MainDialog").showModal();
-})
+});
 
 document.getElementById("PostForm").addEventListener("submit", onSubmitForm);
+
+document.querySelector(".CollapseArea").addEventListener("click", () => {
+  CollapseAll();
+});
 
 
 // Import Firebase modules
@@ -444,29 +448,24 @@ async function AddComments(PostDiv, PostID) {
 
   const { IsAdmin: IsAdmin2 } = userSnap2.data();
 
-  if (uid === AuthorID || IsAdmin2 == true) {
-    const DeleteButton = document.createElement("button");
-    DeleteButton.innerHTML = "X";
-    DeleteButton.className = "DeleteButton2";
-    DeleteButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const DeleteDialog =  document.querySelector("#DeleteDialog2");
-      DeleteDialog.show();
-      document.querySelector("#ConfirmDelete2").addEventListener("click", async () => {
-        console.log(`post-id="${DocId}"`);
-        const currentElement = document.querySelector(`[comment-id="${DocId}"]`);
-        console.log(currentElement);
-        currentElement.remove();
-        await deleteDoc(doc(db, "posts", PostID, "comments", DocId));
-        DeleteDialog.close();
+    if (uid === AuthorID || IsAdmin2 == true) {
+      const DeleteButton = document.createElement("button");
+      DeleteButton.innerHTML = "X";
+      DeleteButton.className = "DeleteButton2";
+      DeleteButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const DeleteDialog =  document.querySelector("#DeleteDialog2");
+        DeleteDialog.show();
+        document.querySelector("#ConfirmDelete2").addEventListener("click", async () => {
+          deleteComment(PostID, DocId)
+          DeleteDialog.close();
+        });
+        document.querySelector("#NevermindDelete2").addEventListener("click", () => {
+          DeleteDialog.close();
+        });
       });
-      document.querySelector("#NevermindDelete2").addEventListener("click", () => {
-        DeleteDialog.close();
-      });
-    });
-    ProfileBox.appendChild(DeleteButton);
-  }
-
+      ProfileBox.appendChild(DeleteButton);
+    }
   });
 }
 
@@ -503,12 +502,14 @@ async function onSubmitComment(e) {
   }
 
   // Add the comment to the specific post
-  await addDoc(collection(db, "posts", postId, "comments"), {
+  const CurrentComment = await addDoc(collection(db, "posts", postId, "comments"), {
     AuthorID: AuthorID,
     Content: Content,
     Timestamp: serverTimestamp(),
     Rank: await fetchRank(AuthorID)
   });
+
+  const ThisCommentID = CurrentComment.id;
 
   // Fetch user info
   const userRef = doc(db, "users", AuthorID);
@@ -518,6 +519,7 @@ async function onSubmitComment(e) {
   // Create CommentBox structure
   const CommentBox = document.createElement("div");
   CommentBox.className = "ContainerCommentBox";
+  CommentBox.setAttribute("comment-id", ThisCommentID);
 
   const ProfileBox = document.createElement("div");
   ProfileBox.className = "ProfileBox2";
@@ -561,11 +563,29 @@ async function onSubmitComment(e) {
   // Append profile box and content box to the CommentBox
   CommentBox.appendChild(ProfileBox);
   CommentBox.appendChild(ContentBox);
+    const DeleteButton = document.createElement("button");
+    DeleteButton.innerHTML = "X";
+    DeleteButton.className = "DeleteButton2";
+    DeleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const DeleteDialog =  document.querySelector("#DeleteDialog2");
+      DeleteDialog.show();
+      document.querySelector("#ConfirmDelete2").addEventListener("click", async () => {
+        deleteComment(postId, ThisCommentID);
+        DeleteDialog.close();
+      });
+      document.querySelector("#NevermindDelete2").addEventListener("click", () => {
+        DeleteDialog.close();
+      });
+    });
+    ProfileBox.appendChild(DeleteButton);
 
   // Insert the comment at the top of the comment section
   const CommentArea = postDiv.querySelector(".CommentBox");
   const AllComments = CommentArea.querySelectorAll(".ContainerCommentBox");
   CommentArea.insertBefore(CommentBox, AllComments[0]);
+
+
 }
 
 
@@ -586,6 +606,22 @@ async function onSubmitComment(e) {
     return date.toLocaleString('en-US', options); 
     
   }
+
+async function deleteComment(PostId, CommentId) {
+  const currentElement = document.querySelector(`[comment-id="${CommentId}"]`);
+  currentElement.remove();
+  await deleteDoc(doc(db, "posts", PostId, "comments", CommentId));
+}
+
+function CollapseAll() {
+  console.log("hello");
+  const PostList = document.querySelectorAll(".PostDivs.active");
+
+  for (let i = 0; i < PostList.length; i++) {
+    console.log(PostList[i]);
+      PostList[i].classList.toggle("active");
+  }
+}
 
 
 

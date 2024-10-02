@@ -21,15 +21,19 @@
     </nav>
     <main class = "MainPage">
         <dialog id = "DeleteDialog">
-            <span class = "DialogLabel"> Are you sure you would like to delete this post? </span>
-            <button id = "ConfirmDelete" class = "DialogChild1"> Del </button>
-            <button id = "NevermindDelete" class = "DialogChild2"> Canc </button>
+            <div class = "innerBox">
+                <span class = "DialogLabel"> Are you sure you would like to delete this post? </span>
+                <button id = "ConfirmDelete" class = "DialogChild1"> Delete </button>
+                <button id = "NevermindDelete" class = "DialogChild2"> Cancel </button>
+            </div>
         </dialog>
 
         <dialog id = "DeleteDialog2">
-            <span class = "DialogLabel"> Are you sure you would like to delete this comment? </span>
-            <button id = "ConfirmDelete2" class = "DialogChild1"> Del </button>
-            <button id = "NevermindDelete2" class = "DialogChild2"> Canc </button>
+            <div class = "innerBox">
+                <span class = "DialogLabel"> Are you sure you would like to delete this comment? </span>
+                <button id = "ConfirmDelete2" class = "DialogChild1"> Delete </button>
+                <button id = "NevermindDelete2" class = "DialogChild2"> Cancel </button>
+            </div>
         </dialog>
         <dialog id = "MainDialog">
             <form id = "PostForm">
@@ -46,6 +50,10 @@
         </dialog>
         <button type = "button" class = "AddButton">
             <span class = "AddButton_Plus">New Post</span>
+        </button>
+
+        <button type = "button" class = "CollapseArea">
+            <span class = "CollapseArea"> Collapse All</span>
         </button>
 
     </main>
