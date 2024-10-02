@@ -616,10 +616,9 @@ async function deleteComment(PostId, CommentId) {
 function CollapseAll() {
   console.log("hello");
   const PostList = document.querySelectorAll(".PostDivs.active");
-
-  for (let i = 0; i < PostList.length; i++) {
-    console.log(PostList[i]);
-      PostList[i].classList.toggle("active");
+  PostList[0].classList.toggle("active");
+  for (let i = 1; i < PostList.length; i++) {
+    setTimeout(() => { PostList[i].classList.toggle("active"); }, i * 100);
   }
 }
 
