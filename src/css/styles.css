@@ -362,6 +362,12 @@ a:visited {
   min-height: 100%;
 }
 
+.MainPage2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 #MainFooter {
   display: grid;
 
@@ -664,17 +670,8 @@ hr {
 }
 
 #dashHeader {
-  top: 35px;
-  left: 35px;
-  position: relative;
-  font-size: 25px;
-  font-weight: bold;
-}
-
-#dashHeader {
-  top: 35px;
-  left: 35px;
-  position: relative;
+  margin-top: 20px;
+  margin-left: 30px;
   font-size: 25px;
   font-weight: bold;
 }
@@ -846,6 +843,13 @@ hr {
   top: 200px;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+.DashboardPostContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: green;
 }
 
 

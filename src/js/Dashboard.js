@@ -23,25 +23,42 @@ onAuthStateChanged(auth, async (user) => {
   
       const rank = await fetchRank(uid);
   
-      if (rank === "Admin") {
+      if (rank === "Admin" && document.querySelector(".Grabbable") == null) {
         document.querySelector(".loader").style.visibility = "hidden";
         addUserProfile(uphoto, uname);
         setupAdminPanel();
-      } else if (rank === "Senior") {
+        FetchPosts(uid);
+      } else if (rank === "Senior" && document.querySelector(".Grabbable") == null) {
         document.querySelector(".loader").style.visibility = "hidden";
         addUserProfile(uphoto, uname);
         displaySeniorBadge();
+        FetchPosts(uid);
       }
-      else if (rank === null) {
+      else if (rank === null && document.querySelector(".Grabbable") == null) {
         document.querySelector(".loader").style.visibility = "hidden";
         addUserProfile(uphoto, uname);
+        FetchPosts(uid);
       }
     } else {
       window.location.href = "index.html";
     }
 });
 
-async function fetchRank(userId) {
+
+
+  async function FetchPosts(UserId) {
+    const postQuery = query(collection(db, "posts"), where(""))
+  }
+
+
+
+
+
+
+
+// earlier work
+
+  async function fetchRank(userId) {
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
   
@@ -177,7 +194,6 @@ function createUserAccountDiv(UserName, PhotoURL, IsSenior, DocId) {
   
     return AccountDiv;
   }
-
 
 
 
