@@ -847,10 +847,33 @@ hr {
 
 .DashboardPostContainer {
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
-  height: 100%;
-  background-color: green;
+  height: auto;
+  background-color: white;
+  flex-wrap: wrap;
+  gap: 10px 30px;
 }
+
+.PostContainer {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: auto;
+  background-color: var(--main-bg);
+  border: solid 1px var(--main-bg);
+}
+
+.PostContainer:hover {
+  border: 1px solid;
+}
+
+.DashboardSpanContainers {
+  word-wrap: break-word;
+  height: auto;
+}
+
 
 
 

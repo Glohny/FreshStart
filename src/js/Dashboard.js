@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy  } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 // Firebase configuration and initialization
 const firebaseConfig = {
@@ -46,21 +46,61 @@ onAuthStateChanged(auth, async (user) => {
 
 
 
-  async function FetchPosts(UserId) {
+  async function FetchPosts() {
+    const UID = auth.currentUser.uid;
 
-    const CurrentUser = auth.user;
-    const UID = CurrentUser.id;
+    const postQuery = query(collection(db, "posts"), where("AuthorID", "==", UID), orderBy("Timestamp", "desc"));
+    const querySnapShot = await getDocs(postQuery);
+    querySnapShot.forEach(async (docInfo) => {
 
-    const postQuery = query(collection(db, "posts"), where(""))
+      const { AuthorID, Content, Title, Timestamp } = docInfo.data();
+
+
+      const PostBody = document.createElement("div");
+      PostBody.className = "PostContainer";
+      
+      const WordBox2 = document.createElement("span");
+      WordBox2.className = "DashboardSpanContainers";
+      const WordBox3 = document.createElement("span");
+      WordBox3.className = "DashboardSpanContainers";
+      const WordBox4 = document.createElement("span");
+      WordBox4.className = "DashboardSpanContainers";
+
+      WordBox2.innerHTML = Title;
+      WordBox3.innerHTML = Content;
+      WordBox4.innerHTML = ConvertTime(Timestamp);
+
+      PostBody.appendChild(WordBox2);
+      PostBody.appendChild(WordBox3);
+      PostBody.appendChild(WordBox4);
+      
+      document.querySelector(".DashboardPostContainer").appendChild(PostBody);
+    });
   }
 
 
 
 
 
-
-
 // earlier work
+
+function ConvertTime(TimestampString) {
+
+  const date = TimestampString.toDate();
+  
+  const options = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: true 
+  };
+  
+  return date.toLocaleString('en-US', options); 
+  
+}
 
   async function fetchRank(userId) {
     const userRef = doc(db, "users", userId);
@@ -75,17 +115,19 @@ onAuthStateChanged(auth, async (user) => {
 }
 
 function addUserProfile(uphoto, uname) {
-    const NameSpan = document.createElement("span");
-    const UPhotoIMG = document.createElement("img");
-  
-    UPhotoIMG.src = uphoto;
-    UPhotoIMG.className = "UPhotoIMG";
-    UPhotoIMG.alt = ":(";
-    NameSpan.innerHTML = uname;
-  
-    const profileBox = document.querySelector(".ProfileBox");
-    profileBox.appendChild(UPhotoIMG);
-    profileBox.appendChild(NameSpan);
+  const NameSpan = document.createElement("span");
+  const UPhotoIMG = document.createElement("img");
+  NameSpan.className = "Grabbable";
+
+  UPhotoIMG.src = uphoto;
+  UPhotoIMG.className = "UPhotoIMG";
+  UPhotoIMG.referrerPolicy = "no-referrer";
+  UPhotoIMG.alt = ":(";
+  NameSpan.innerHTML = uname;
+
+  const profileBox = document.querySelector(".ProfileBox");
+  profileBox.appendChild(UPhotoIMG);
+  profileBox.appendChild(NameSpan);
 }
 
 async function setupAdminPanel() {
