@@ -47,6 +47,10 @@ onAuthStateChanged(auth, async (user) => {
 
 
   async function FetchPosts(UserId) {
+
+    const CurrentUser = auth.user;
+    const UID = CurrentUser.id;
+
     const postQuery = query(collection(db, "posts"), where(""))
   }
 

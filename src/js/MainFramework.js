@@ -8,6 +8,10 @@ document.querySelector(".CollapseArea").addEventListener("click", () => {
   CollapseAll();
 });
 
+document.querySelector(".DummyInput").addEventListener("click", () => {
+  addDummyContent();
+});
+
 
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
@@ -331,8 +335,18 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
       DeleteDialog.show();
       document.querySelector("#ConfirmDelete").addEventListener("click", async () => {
         DeleteDialog.close();
-        document.querySelector(`[post-id="${PostID}"][class="PostDivs"]`).remove();
+        const MyDiv = document.querySelector(`[post-id="${PostID}"]`);
+        console.log(MyDiv);
+        const commentsRef = collection(db, "posts", PostID, "comments");
+        const commentQuery = query(commentsRef);
+        const querySnapShot = await getDocs(commentQuery);
+        querySnapShot.forEach(async (docInfo) => {
+          console.log(doc.id);
+          await deleteDoc(doc(db, "posts", PostID, "comments", docInfo.id));
+        });
+        MyDiv.remove();
         await deleteDoc(doc(db, "posts", PostID));
+
       });
       document.querySelector("#NevermindDelete").addEventListener("click", () => {
         DeleteDialog.close();
@@ -627,148 +641,16 @@ function CollapseAll() {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /* Andrews Section */
+async function addDummyContent() {
+  for (let i = 1; i <= 5; i++) {
+    await addDoc(collection(db, "posts"), {
+      AuthorID: auth.currentUser.uid ,
+      Content: "Hello!",
+      Timestamp: serverTimestamp(),
+      Title: "Dummy" + i,
+      Rank: "Senior"
+    });
+  } 
+
+  location.reload();
+}
