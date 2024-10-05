@@ -53,23 +53,29 @@ onAuthStateChanged(auth, async (user) => {
     const querySnapShot = await getDocs(postQuery);
     querySnapShot.forEach(async (docInfo) => {
 
-      const { AuthorID, Content, Title, Timestamp } = docInfo.data();
+      const { Content, Title, Timestamp } = docInfo.data();
 
 
       const PostBody = document.createElement("div");
       PostBody.className = "PostContainer";
+      PostBody.setAttribute("post-id", docInfo.id);
+
+      const JumpTo = document.createElement("a"); 
+      JumpTo.innerHTML = "Jump To";
+      JumpTo.href = "homepage.html?postId=" + docInfo.id;
       
       const WordBox2 = document.createElement("span");
-      WordBox2.className = "DashboardSpanContainers";
+      WordBox2.className = "DashboardSpanTitleContainer";
       const WordBox3 = document.createElement("span");
       WordBox3.className = "DashboardSpanContainers";
       const WordBox4 = document.createElement("span");
-      WordBox4.className = "DashboardSpanContainers";
+      WordBox4.className = "DashboardSpanTimeContainer";
 
       WordBox2.innerHTML = Title;
       WordBox3.innerHTML = Content;
       WordBox4.innerHTML = ConvertTime(Timestamp);
 
+      PostBody.appendChild(JumpTo);
       PostBody.appendChild(WordBox2);
       PostBody.appendChild(WordBox3);
       PostBody.appendChild(WordBox4);

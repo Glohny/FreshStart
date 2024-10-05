@@ -8,9 +8,11 @@ document.querySelector(".CollapseArea").addEventListener("click", () => {
   CollapseAll();
 });
 
-document.querySelector(".DummyInput").addEventListener("click", () => {
-  addDummyContent();
-});
+// document.querySelector(".DummyInput").addEventListener("click", () => {
+//   addDummyContent();
+// });
+
+
 
 
 // Import Firebase modules
@@ -489,12 +491,25 @@ async function AddPosts() {
   const querySnapshot = await getDocs(postQuery);
   const HomePage = document.querySelector(".MainPage");
   let i = 1;
+  const totalDocs = querySnapshot.size;
   querySnapshot.forEach(async (doc) => {
     const { AuthorID, Content, Title, Timestamp } = doc.data();
     const DocId = doc.id;
     const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
     AddComments(PostDivs, DocId);
-    setTimeout(() => { HomePage.appendChild(PostDivs); }, i * 50);
+    HomePage.appendChild(PostDivs);
+    if (i === totalDocs) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId2 = urlParams.get('postId');
+      if (postId2) {
+          const mainPage = document.querySelector(".MainPage");
+          const postElement = mainPage.querySelector(`[post-id="${postId2}"]`);
+          if (postElement) {
+              postElement.scrollIntoView({ behavior: 'smooth' });
+              postElement.classList.toggle("active");
+          }
+    }
+    }
     i++;
   });
 }
@@ -641,16 +656,16 @@ function CollapseAll() {
   }
 }
 
-async function addDummyContent() {
-  for (let i = 1; i <= 5; i++) {
-    await addDoc(collection(db, "posts"), {
-      AuthorID: auth.currentUser.uid ,
-      Content: "Hello!",
-      Timestamp: serverTimestamp(),
-      Title: "Dummy" + i,
-      Rank: "Senior"
-    });
-  } 
+// async function addDummyContent() {
+//   for (let i = 1; i <= 5; i++) {
+//     await addDoc(collection(db, "posts"), {
+//       AuthorID: auth.currentUser.uid ,
+//       Content: "Hello!",
+//       Timestamp: serverTimestamp(),
+//       Title: "Dummy" + i,
+//       Rank: "Senior"
+//     });
+//   } 
 
-  location.reload();
-}
+//   location.reload();
+// }

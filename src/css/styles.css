@@ -848,7 +848,7 @@ hr {
 .DashboardPostContainer {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   height: auto;
   background-color: white;
@@ -858,10 +858,12 @@ hr {
 
 .PostContainer {
   display: flex;
+  border-radius: 20px;
+  padding: 20px;
   flex-direction: column;
   width: 600px;
   height: auto;
-  background-color: var(--main-bg);
+  background-color: #efe7e6;
   border: solid 1px var(--main-bg);
 }
 
@@ -869,9 +871,18 @@ hr {
   border: 1px solid;
 }
 
-.DashboardSpanContainers {
+.DashboardSpanContainers, .DashboardSpanTimeContainer, .DashboardSpanTitleContainer {
   word-wrap: break-word;
   height: auto;
+}
+
+.DashboardSpanTimeContainer {
+  color: rgb(121, 121, 121);
+}
+
+.DashboardSpanTitleContainer {
+  font-size: 25px;
+  font-weight: 1000;
 }
 
 
