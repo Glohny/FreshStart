@@ -885,6 +885,19 @@ hr {
   font-weight: 1000;
 }
 
+.HoverDarken3:link, .HoverDarken3:visited {
+  color: var(--main-txt-clr);
+  text-decoration: none;
+  cursor: auto;
+}
+
+.HoverDarken3:hover {
+  color: limegreen;
+}
+
+.HoverDarken3:link:active, .HoverDarken3:visited:active {
+  color: var(--main-txt-clr);
+}
 
 
 

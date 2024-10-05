@@ -63,6 +63,7 @@ onAuthStateChanged(auth, async (user) => {
       const JumpTo = document.createElement("a"); 
       JumpTo.innerHTML = "Jump To";
       JumpTo.href = "homepage.html?postId=" + docInfo.id;
+      JumpTo.className = "HoverDarken3";
       
       const WordBox2 = document.createElement("span");
       WordBox2.className = "DashboardSpanTitleContainer";

@@ -249,7 +249,7 @@ async function onSubmitForm(e) {
   });
 
   document.getElementById("PostForm").reset();
-  location.reload();
+  window.location.href = "homepage.html";
 }
 
 async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
