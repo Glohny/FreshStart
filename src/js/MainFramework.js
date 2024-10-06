@@ -239,6 +239,7 @@ async function onSubmitForm(e) {
   const Content = document.getElementById("Content").value;
   const Timestamp = serverTimestamp();
   const Title = document.getElementById("Title").value;
+  console.log(await fetchRank(AuthorID));
 
   await addDoc(collection(db, "posts"), {
     AuthorID: AuthorID,
