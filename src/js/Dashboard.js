@@ -60,10 +60,13 @@ onAuthStateChanged(auth, async (user) => {
       PostBody.className = "PostContainer";
       PostBody.setAttribute("post-id", docInfo.id);
 
+      const LinkDiv = document.createElement("div");
+      LinkDiv.className = "DashboardLinkContainer";
       const JumpTo = document.createElement("a"); 
       JumpTo.innerHTML = "Jump To";
       JumpTo.href = "homepage.html?postId=" + docInfo.id;
       JumpTo.className = "HoverDarken3";
+      LinkDiv.appendChild(JumpTo);
       
       const WordBox2 = document.createElement("span");
       WordBox2.className = "DashboardSpanTitleContainer";
@@ -76,7 +79,7 @@ onAuthStateChanged(auth, async (user) => {
       WordBox3.innerHTML = Content;
       WordBox4.innerHTML = ConvertTime(Timestamp);
 
-      PostBody.appendChild(JumpTo);
+      PostBody.appendChild(LinkDiv);
       PostBody.appendChild(WordBox2);
       PostBody.appendChild(WordBox3);
       PostBody.appendChild(WordBox4);

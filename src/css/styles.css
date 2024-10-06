@@ -864,11 +864,6 @@ hr {
   width: 600px;
   height: auto;
   background-color: #efe7e6;
-  border: solid 1px var(--main-bg);
-}
-
-.PostContainer:hover {
-  border: 1px solid;
 }
 
 .DashboardSpanContainers, .DashboardSpanTimeContainer, .DashboardSpanTitleContainer {
@@ -889,14 +884,20 @@ hr {
   color: var(--main-txt-clr);
   text-decoration: none;
   cursor: auto;
+  transition: .1s;
 }
 
 .HoverDarken3:hover {
   color: limegreen;
+  font-size: 15px;
 }
 
 .HoverDarken3:link:active, .HoverDarken3:visited:active {
   color: var(--main-txt-clr);
+}
+
+.DashboardLinkContainer {
+  display: inline-block;
 }
 
 
