@@ -491,29 +491,39 @@ async function AddPosts() {
   const postQuery = query(postsRef, orderBy("Timestamp", "desc"));
   const querySnapshot = await getDocs(postQuery);
   const HomePage = document.querySelector(".MainPage");
-  let i = 1;
-  const totalDocs = querySnapshot.size;
-  querySnapshot.forEach(async (doc) => {
+
+  const postsData = [];
+  
+  querySnapshot.forEach((doc) => {
     const { AuthorID, Content, Title, Timestamp } = doc.data();
     const DocId = doc.id;
-    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
-    AddComments(PostDivs, DocId);
-    HomePage.appendChild(PostDivs);
-    if (i === totalDocs) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const postId2 = urlParams.get('postId');
-      if (postId2) {
-          const mainPage = document.querySelector(".MainPage");
-          const postElement = mainPage.querySelector(`[post-id="${postId2}"]`);
-          if (postElement) {
-              postElement.scrollIntoView({ behavior: 'smooth' });
-              postElement.classList.toggle("active");
-          }
-    }
-    }
-    i++;
+    postsData.push({ AuthorID, Content, Title, Timestamp, DocId });
   });
+
+  const postDivsArray = await Promise.all(postsData.map(async (postData) => {
+    const { Content, Title, AuthorID, DocId, Timestamp } = postData;
+    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
+    await AddComments(PostDivs, DocId); 
+    return PostDivs;
+  }));
+
+  postDivsArray.forEach((PostDivs) => {
+    HomePage.appendChild(PostDivs);
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId2 = urlParams.get('postId');
+  if (postId2) {
+    const mainPage = document.querySelector(".MainPage");
+    const postElement = mainPage.querySelector(`[post-id="${postId2}"]`);
+    if (postElement) {
+      postElement.scrollIntoView({ behavior: 'smooth' });
+      postElement.classList.toggle("active");
+    }
+  }
 }
+
+
 
 async function onSubmitComment(e) {
   e.preventDefault();
