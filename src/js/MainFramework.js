@@ -239,21 +239,22 @@ async function onSubmitForm(e) {
   const Content = document.getElementById("Content").value;
   const Timestamp = serverTimestamp();
   const Title = document.getElementById("Title").value;
-  console.log(await fetchRank(AuthorID));
+  const Priority = document.getElementById("Priority").value;
 
   await addDoc(collection(db, "posts"), {
     AuthorID: AuthorID,
     Content: Content,
     Timestamp: Timestamp,
     Title: Title,
-    Rank: await fetchRank(AuthorID)
+    Rank: await fetchRank(AuthorID),
+    Priority: Priority
   });
 
   document.getElementById("PostForm").reset();
   window.location.href = "homepage.html";
 }
 
-async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
+async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp, Priority) {
 
   const userRef = doc(db, "users", AuthorID);
   const userSnap = await getDoc(userRef);
@@ -262,6 +263,19 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp) {
   const currentDiv = document.createElement("div");
   currentDiv.setAttribute("post-id", PostID);
   currentDiv.className = "PostDivs";
+
+  console.log(Priority);
+  if (Priority === "High") {
+    currentDiv.style.backgroundColor = "rgb(254 202 202 / 1)";
+  }
+  else if (Priority === "Medium") {
+    currentDiv.style.backgroundColor = "rgb(254 240 138 / 1)";
+  }
+  else {
+    currentDiv.style.backgroundColor = "rgb(167 243 208 / 1)";
+  }
+
+
 
   const TimeStampDiv = document.createElement("div");
   const TimeStampSpan = document.createElement("span");
@@ -495,14 +509,14 @@ async function AddPosts() {
   const postsData = [];
   
   querySnapshot.forEach((doc) => {
-    const { AuthorID, Content, Title, Timestamp } = doc.data();
+    const { AuthorID, Content, Title, Timestamp, Priority } = doc.data();
     const DocId = doc.id;
-    postsData.push({ AuthorID, Content, Title, Timestamp, DocId });
+    postsData.push({ AuthorID, Content, Title, Timestamp, DocId, Priority });
   });
 
   const postDivsArray = await Promise.all(postsData.map(async (postData) => {
-    const { Content, Title, AuthorID, DocId, Timestamp } = postData;
-    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp);
+    const { Content, Title, AuthorID, DocId, Timestamp, Priority } = postData;
+    const PostDivs = await CreatePostDiv(Content, Title, AuthorID, DocId, Timestamp, Priority);
     await AddComments(PostDivs, DocId); 
     return PostDivs;
   }));
@@ -666,17 +680,3 @@ function CollapseAll() {
     setTimeout(() => { PostList[i].classList.toggle("active"); }, i * 100);
   }
 }
-
-// async function addDummyContent() {
-//   for (let i = 1; i <= 5; i++) {
-//     await addDoc(collection(db, "posts"), {
-//       AuthorID: auth.currentUser.uid ,
-//       Content: "Hello!",
-//       Timestamp: serverTimestamp(),
-//       Title: "Dummy" + i,
-//       Rank: "Senior"
-//     });
-//   } 
-
-//   location.reload();
-// }

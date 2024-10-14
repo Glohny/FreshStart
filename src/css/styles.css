@@ -312,6 +312,18 @@
   background-color: var(--main-bg);
 }
 
+.TopNavigation2 {
+  display: grid;
+  top: 0px;
+  grid-template-columns: 1fr 2fr;
+  color:rgb(121, 121, 121);
+  font-weight: 500;
+  box-shadow: 0 5px 8px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  background-color: var(--main-bg);
+  margin-bottom: 60px;
+}
+
 #HeadTitle,#HeadTitle2 {
   color: var(--main-txt-clr);
   margin-left: 300px;
@@ -553,7 +565,7 @@ a:visited {
   left: 50%;
   transform: translate(-50%, -50%); 
   width: 500px; 
-  height: 650px;
+  height: 710px;
   padding: 20px;
   background: white;
   border-radius: 8px;
@@ -600,7 +612,6 @@ textarea#Content {
   height: 48px;
   width: 70%;
   background-color: var(--main-bg);
-  border: solid black 1px;
   box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
   border-radius: 20px;
   animation: 1.5s PostDivs;
@@ -609,6 +620,10 @@ textarea#Content {
   transition: height .75s;
   will-change: height;
   overflow-wrap: break-word;
+}
+
+.PostDivs:first-of-type {
+  margin-top: 20px;
 }
 
 hr {
@@ -620,7 +635,7 @@ hr {
 
 .CommentBox {
   grid-area: Comments;
-  background-color: var(--main-bg);
+  background-color: inherit;
 }
 
 .active {
@@ -670,8 +685,9 @@ hr {
 }
 
 #dashHeader {
-  margin-top: 20px;
-  margin-left: 30px;
+  position: absolute;
+  left: 25px;
+  top: 80px;
   font-size: 25px;
   font-weight: bold;
 }
@@ -805,7 +821,7 @@ hr {
   width: 85%;
   height: 50px;
   border: none;
-  background-color: rgb(224, 219, 219);
+  background-color: rgb(236, 235, 235);
   border-radius: 15px;
   margin-right: 5px;
 }
@@ -846,14 +862,15 @@ hr {
 }
 
 .DashboardPostContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  columns: 3;
   width: 100%;
   height: auto;
   background-color: white;
-  flex-wrap: wrap;
-  gap: 10px 30px;
+  gap: 0.5rem;
+}
+
+.DashboardPostContainer {
+  margin-top: 0px;
 }
 
 .PostContainer {
@@ -864,6 +881,12 @@ hr {
   width: 600px;
   height: auto;
   background-color: #efe7e6;
+  break-inside: avoid-column;
+  margin-top: 15px;
+}
+
+.PostContainer:first-child {
+  margin-top: 0px;
 }
 
 .DashboardSpanContainers, .DashboardSpanTimeContainer, .DashboardSpanTitleContainer {
