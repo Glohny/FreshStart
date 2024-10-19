@@ -46,47 +46,62 @@ onAuthStateChanged(auth, async (user) => {
 
 
 
-  async function FetchPosts() {
-    const UID = auth.currentUser.uid;
+async function FetchPosts() {
+  const UID = auth.currentUser.uid;
 
-    const postQuery = query(collection(db, "posts"), where("AuthorID", "==", UID), orderBy("Timestamp", "desc"));
-    const querySnapShot = await getDocs(postQuery);
-    querySnapShot.forEach(async (docInfo) => {
+  const postQuery = query(collection(db, "posts"), where("AuthorID", "==", UID), orderBy("Timestamp", "desc"));
+  const querySnapShot = await getDocs(postQuery);
 
-      const { Content, Title, Timestamp } = docInfo.data();
+  const postsData = [];
 
+  // Collect post data first without awaiting each step
+  querySnapShot.forEach((docInfo) => {
+    const { Content, Title, Timestamp } = docInfo.data();
+    const DocId = docInfo.id;
+    postsData.push({ Content, Title, Timestamp, DocId });
+  });
 
-      const PostBody = document.createElement("div");
-      PostBody.className = "PostContainer";
-      PostBody.setAttribute("post-id", docInfo.id);
+  // Process posts in parallel using Promise.all
+  const postElements = await Promise.all(postsData.map(async (postData) => {
+    const { Content, Title, Timestamp, DocId } = postData;
 
-      const LinkDiv = document.createElement("div");
-      LinkDiv.className = "DashboardLinkContainer";
-      const JumpTo = document.createElement("a"); 
-      JumpTo.innerHTML = "Jump To";
-      JumpTo.href = "homepage.html?postId=" + docInfo.id;
-      JumpTo.className = "HoverDarken3";
-      LinkDiv.appendChild(JumpTo);
-      
-      const WordBox2 = document.createElement("span");
-      WordBox2.className = "DashboardSpanTitleContainer";
-      const WordBox3 = document.createElement("span");
-      WordBox3.className = "DashboardSpanContainers";
-      const WordBox4 = document.createElement("span");
-      WordBox4.className = "DashboardSpanTimeContainer";
+    const PostBody = document.createElement("div");
+    PostBody.className = "PostContainer";
+    PostBody.setAttribute("post-id", DocId);
 
-      WordBox2.innerHTML = Title;
-      WordBox3.innerHTML = Content;
-      WordBox4.innerHTML = ConvertTime(Timestamp);
+    const LinkDiv = document.createElement("div");
+    LinkDiv.className = "DashboardLinkContainer";
+    const JumpTo = document.createElement("a"); 
+    JumpTo.innerHTML = "Jump To";
+    JumpTo.href = "homepage.html?postId=" + DocId;
+    JumpTo.className = "HoverDarken3";
+    LinkDiv.appendChild(JumpTo);
+    
+    const WordBox2 = document.createElement("span");
+    WordBox2.className = "DashboardSpanTitleContainer";
+    const WordBox3 = document.createElement("span");
+    WordBox3.className = "DashboardSpanContainers";
+    const WordBox4 = document.createElement("span");
+    WordBox4.className = "DashboardSpanTimeContainer";
 
-      PostBody.appendChild(LinkDiv);
-      PostBody.appendChild(WordBox2);
-      PostBody.appendChild(WordBox3);
-      PostBody.appendChild(WordBox4);
-      
-      document.querySelector(".DashboardPostContainer").appendChild(PostBody);
-    });
-  }
+    WordBox2.innerHTML = Title;
+    WordBox3.innerHTML = Content;
+    WordBox4.innerHTML = ConvertTime(Timestamp);
+
+    PostBody.appendChild(LinkDiv);
+    PostBody.appendChild(WordBox2);
+    PostBody.appendChild(WordBox3);
+    PostBody.appendChild(WordBox4);
+
+    return PostBody;
+  }));
+
+  // Reverse the order to display the most recent posts at the top
+  const dashboardContainer = document.querySelector(".DashboardPostContainer");
+  postElements.reverse().forEach((postElement) => {
+    dashboardContainer.appendChild(postElement);
+  });
+}
 
 
 
