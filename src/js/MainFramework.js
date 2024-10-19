@@ -265,14 +265,15 @@ async function CreatePostDiv(Content, Title, AuthorID, PostID, Timestamp, Priori
   currentDiv.className = "PostDivs";
 
   console.log(Priority);
+  currentDiv.style.borderStyle = "solid";
   if (Priority === "High") {
-    currentDiv.style.backgroundColor = "rgb(254 202 202 / 1)";
+    currentDiv.style.borderColor = "rgb(254 202 202 / 1)";
   }
   else if (Priority === "Medium") {
-    currentDiv.style.backgroundColor = "rgb(254 240 138 / 1)";
+    currentDiv.style.borderColor = "rgb(254 240 138 / 1)";
   }
   else {
-    currentDiv.style.backgroundColor = "rgb(167 243 208 / 1)";
+    currentDiv.style.borderColor = "rgb(167 243 208 / 1)";
   }
 
 

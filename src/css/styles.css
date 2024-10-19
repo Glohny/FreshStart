@@ -609,7 +609,7 @@ textarea#Content {
     "Comments Comments Comments Comments Comments Comments"
     "Comments Comments Comments Comments Comments Comments";
 
-  height: 48px;
+  height: 52px;
   width: 70%;
   background-color: var(--main-bg);
   box-shadow: 0 0px 6px -1px rgba(0, 0, 0, .5);
@@ -620,6 +620,7 @@ textarea#Content {
   transition: height .75s;
   will-change: height;
   overflow-wrap: break-word;
+  margin-bottom: 10px;
 }
 
 .PostDivs:first-of-type {
