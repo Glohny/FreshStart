@@ -620,7 +620,7 @@ textarea#Content {
   transition: height .75s;
   will-change: height;
   overflow-wrap: break-word;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 .PostDivs:first-of-type {
